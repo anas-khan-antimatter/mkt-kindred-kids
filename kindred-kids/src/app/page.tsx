@@ -1,69 +1,178 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, Leaf, Heart, Sparkles, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { collections } from "@/lib/data";
+
+const values = [
+  {
+    icon: Leaf,
+    title: "100% Organic",
+    description: "All materials are GOTS-certified organic cotton or responsibly sourced linen.",
+  },
+  {
+    icon: Heart,
+    title: "Ethically Made",
+    description: "We partner with fair-wage factories and artisan cooperatives around the world.",
+  },
+  {
+    icon: Sparkles,
+    title: "Designed to Last",
+    description: "Reinforced seams, adjustable fits, and timeless designs that hand down beautifully.",
+  },
+  {
+    icon: Shield,
+    title: "Low-Impact Dyes",
+    description: "Our colors come from low-impact, non-toxic dyes that are safe for kids and the planet.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-brand-gradient px-4 py-20 sm:px-6 sm:py-32 lg:px-8">
+        <div className="relative mx-auto max-w-7xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <Badge className="mb-4 bg-white/20 text-white hover:bg-white/30 border-0">
+              New Spring Collection
+            </Badge>
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Dressed for
+              <span className="block text-gradient bg-gradient-to-r from-yellow-200 via-pink-200 to-blue-200">
+                wild adventures
+              </span>
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-white/80">
+              Playful, sustainable children&apos;s clothing made with organic materials.
+              Every piece is designed to spark joy and stand up to the elements.
+            </p>
+            <div className="mt-8 flex items-center justify-center gap-4">
+              <Button asChild size="lg" className="bg-white text-foreground hover:bg-white/90 shadow-lg">
+                <Link href="/collections">
+                  Shop Now
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
+                <Link href="/lookbook">View Lookbook</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+        {/* Decorative circles */}
+        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/5" />
+        <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-white/5" />
+      </section>
+
+      {/* Featured Collections */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="mb-10 text-center">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Our Collections</h2>
+          <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+            Seasonal stories crafted for every kind of childhood adventure.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {collections.map((collection) => (
+            <Link key={collection.id} href={`/collections?collection=${collection.slug}`}>
+              <Card className="group h-full overflow-hidden border-0 bg-muted/50 shadow-sm transition-all hover:shadow-md">
+                <div className="aspect-[4/3] w-full bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <div className="text-4xl mb-2">
+                      {collection.id === "meadow" ? "🌿" : collection.id === "seaside" ? "🌊" : collection.id === "harvest" ? "🍂" : "⭐"}
+                    </div>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold group-hover:text-primary transition-colors">{collection.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground line-clamp-1">{collection.description}</p>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
-      </main>
+        <div className="mt-10 text-center">
+          <Button asChild variant="outline">
+            <Link href="/collections">
+              Explore All Collections
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="bg-muted/30 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Made with Meaning</h2>
+            <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
+              Every stitch, every seam — we care about how our clothes are made.
+            </p>
+          </div>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {values.map((value) => (
+              <div key={value.title} className="text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                  <value.icon className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="mt-4 font-semibold">{value.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Button asChild variant="outline">
+              <Link href="/sustainability">
+                Read Our Story
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Gift Finder CTA */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="rounded-2xl bg-gradient-to-br from-accent/30 via-primary/5 to-secondary/10 p-8 sm:p-12">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Not sure what to get?
+            </h2>
+            <p className="mt-4 text-muted-foreground">
+              Take our quick Gift Finder quiz and we&apos;ll match your little one with the perfect pieces.
+            </p>
+            <Button asChild size="lg" className="mt-6 shadow-md">
+              <Link href="/gift-finder">
+                Take the Quiz
+                <Sparkles className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="border-t border-border/40 bg-muted/20 py-16">
+        <div className="mx-auto max-w-xl px-4 text-center sm:px-6">
+          <h2 className="text-2xl font-bold tracking-tight">Join the Kindred</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Be the first to hear about new collections, special offers, and playtime inspiration.
+          </p>
+          <form className="mt-6 flex gap-2" onSubmit={(e) => e.preventDefault()}>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <Button type="submit">Subscribe</Button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
