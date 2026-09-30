@@ -72,6 +72,13 @@
   --accent: oklch(0.88 0.12 95);
   --accent-foreground: oklch(0.28 0.04 260);
 
+  /* Extra brand pastels for illustrated feel */
+  --pastel-pink: oklch(0.88 0.06 350);
+  --pastel-lavender: oklch(0.86 0.08 290);
+  --pastel-mint: oklch(0.90 0.06 160);
+  --pastel-peach: oklch(0.91 0.08 60);
+  --pastel-sky: oklch(0.89 0.06 220);
+
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.90 0.025 70);
   --input: oklch(0.90 0.025 70);
