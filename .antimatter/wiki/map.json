@@ -1,23 +1,199 @@
 {
-  "root": "/tmp/am-ws/ch_muna7iwb_1",
-  "name": "ch_muna7iwb_1",
-  "generatedAt": "2026-09-29T23:02:41.548Z",
-  "fileCount": 1,
-  "dirCount": 1,
+  "root": "/tmp/am-ws/c-1790732968742-bn6mm",
+  "name": "c-1790732968742-bn6mm",
+  "generatedAt": "2026-09-30T17:40:01.066Z",
+  "fileCount": 49,
+  "dirCount": 13,
   "languages": {
-    "Markdown": 1
+    "Markdown": 8,
+    "JSON": 5,
+    "JavaScript": 2,
+    "TypeScript": 26,
+    "CSS": 1
   },
   "keyFiles": [
-    "README.md"
+    "package.json",
+    "README.md",
+    "tsconfig.json"
   ],
   "directories": [
     {
-      "dir": "(root)",
-      "fileCount": 1,
+      "dir": ".antimatter/wiki",
+      "fileCount": 6,
       "files": [
-        "README.md"
+        "index.md",
+        "log.md",
+        "map.json",
+        "map.md",
+        "overview.md",
+        "schema.md"
       ],
       "symbols": []
+    },
+    {
+      "dir": "(root)",
+      "fileCount": 11,
+      "files": [
+        ".gitignore",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "components.json",
+        "eslint.config.mjs",
+        "next.config.ts",
+        "package-lock.json",
+        "package.json",
+        "postcss.config.mjs",
+        "README.md",
+        "tsconfig.json"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "public",
+      "fileCount": 5,
+      "files": [
+        "file.svg",
+        "globe.svg",
+        "next.svg",
+        "vercel.svg",
+        "window.svg"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app",
+      "fileCount": 4,
+      "files": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx",
+        "page.tsx"
+      ],
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const"
+        }
+      ]
+    },
+    {
+      "dir": "src/app/collections",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/collections/[slug]",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/gift-finder",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/lookbook",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/size-guide",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/sustainability",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/components/layout",
+      "fileCount": 3,
+      "files": [
+        "cart-drawer.tsx",
+        "footer.tsx",
+        "header.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/components/ui",
+      "fileCount": 11,
+      "files": [
+        "accordion.tsx",
+        "badge.tsx",
+        "button.tsx",
+        "card.tsx",
+        "dialog.tsx",
+        "input.tsx",
+        "label.tsx",
+        "radio-group.tsx",
+        "separator.tsx",
+        "sheet.tsx",
+        "tabs.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/lib",
+      "fileCount": 3,
+      "files": [
+        "cart-context.tsx",
+        "data.ts",
+        "utils.ts"
+      ],
+      "symbols": [
+        {
+          "name": "CartProvider",
+          "kind": "fn"
+        },
+        {
+          "name": "useCart",
+          "kind": "fn"
+        },
+        {
+          "name": "CartItem",
+          "kind": "interface"
+        },
+        {
+          "name": "Product",
+          "kind": "interface"
+        },
+        {
+          "name": "products",
+          "kind": "const"
+        },
+        {
+          "name": "collections",
+          "kind": "const"
+        },
+        {
+          "name": "sizeChart",
+          "kind": "const"
+        },
+        {
+          "name": "lookbookLooks",
+          "kind": "const"
+        }
+      ]
     }
   ]
 }

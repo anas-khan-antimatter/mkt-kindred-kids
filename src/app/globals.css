@@ -47,31 +47,41 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ── Kindred Kids palette: soft pastels for play ── */
 :root {
-  --background: oklch(0.99 0.01 85);
-  --foreground: oklch(0.25 0.04 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.04 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.04 260);
-  --primary: oklch(0.65 0.18 25);
+  --background: oklch(0.985 0.008 90);
+  --foreground: oklch(0.28 0.04 260);
+  --card: oklch(0.99 0.01 80);
+  --card-foreground: oklch(0.28 0.04 260);
+  --popover: oklch(0.99 0.01 80);
+  --popover-foreground: oklch(0.28 0.04 260);
+
+  /* Primary — warm coral blush */
+  --primary: oklch(0.72 0.16 30);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.55 0.12 200);
+
+  /* Secondary — soft sky blue */
+  --secondary: oklch(0.68 0.10 210);
   --secondary-foreground: oklch(0.99 0 0);
-  --muted: oklch(0.95 0.02 85);
-  --muted-foreground: oklch(0.55 0.04 260);
-  --accent: oklch(0.85 0.15 85);
-  --accent-foreground: oklch(0.25 0.04 260);
+
+  /* Muted — barely-there warm */
+  --muted: oklch(0.96 0.015 60);
+  --muted-foreground: oklch(0.58 0.035 260);
+
+  /* Accent — buttery yellow */
+  --accent: oklch(0.88 0.12 95);
+  --accent-foreground: oklch(0.28 0.04 260);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.04 85);
-  --input: oklch(0.88 0.04 85);
-  --ring: oklch(0.65 0.18 25);
-  --chart-1: oklch(0.65 0.18 25);
-  --chart-2: oklch(0.55 0.12 200);
-  --chart-3: oklch(0.85 0.15 85);
-  --chart-4: oklch(0.6 0.1 150);
-  --chart-5: oklch(0.7 0.15 300);
-  --radius: 0.75rem;
+  --border: oklch(0.90 0.025 70);
+  --input: oklch(0.90 0.025 70);
+  --ring: oklch(0.72 0.16 30);
+  --chart-1: oklch(0.72 0.16 30);
+  --chart-2: oklch(0.68 0.10 210);
+  --chart-3: oklch(0.88 0.12 95);
+  --chart-4: oklch(0.70 0.12 140);
+  --chart-5: oklch(0.75 0.12 310);
+  --radius: 1rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -92,13 +102,50 @@
   html {
     @apply font-sans;
   }
+
+  /* Softer, rounder everything */
+  img, video, svg {
+    @apply rounded-xl;
+  }
 }
 
 @layer utilities {
+  /* Brand gradient — sunrise pastel sweep */
   .bg-brand-gradient {
-    @apply bg-gradient-to-br from-[oklch(0.85_0.15_85)] via-[oklch(0.9_0.08_45)] to-[oklch(0.8_0.12_200)];
+    @apply bg-gradient-to-br from-[oklch(0.92_0.10_80)] via-[oklch(0.94_0.06_50)] to-[oklch(0.90_0.08_220)];
   }
+
+  /* Warmer, kid-friendlier brand gradient */
+  .bg-brand-warm {
+    @apply bg-gradient-to-br from-[oklch(0.94_0.08_30)] via-[oklch(0.90_0.06_90)] to-[oklch(0.92_0.07_170)];
+  }
+
+  /* Pastel accent gradient for cards */
+  .bg-pastel-card {
+    @apply bg-gradient-to-br from-[oklch(0.95_0.04_60)] via-[oklch(0.94_0.03_110)] to-[oklch(0.93_0.04_200)];
+  }
+
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.65_0.18_25)] to-[oklch(0.55_0.12_200)];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.72_0.16_30)] to-[oklch(0.68_0.10_210)];
+  }
+
+  /* Playful soft shadow for floating elements */
+  .shadow-soft {
+    @apply shadow-sm shadow-[oklch(0.70_0.04_260)/0.08];
+  }
+
+  /* Bouncy entrance — for cards/sections */
+  .animate-bounce-in {
+    @apply animate-in fade-in slide-in-from-bottom-4;
+  }
+
+  /* Floaty badge style */
+  .badge-pill {
+    @apply rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary border-0;
+  }
+
+  /* Dotted decorative border */
+  .border-doodle {
+    @apply border-2 border-dashed border-current/20 rounded-3xl;
   }
 }
