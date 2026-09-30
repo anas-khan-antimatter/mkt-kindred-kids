@@ -144,45 +144,79 @@ export default function GiftFinderPage() {
   };
 
   const generateResult = (answers: Answers) => {
-    let recommended = [...products];
+    // Score each product against the quiz answers for better matching
+    type Scored = { product: typeof products[0]; score: number };
+    const scored: Scored[] = products.map((p) => {
+      let score = 0;
 
-    if (answers.age === "infant") {
-      recommended = recommended.filter((p) => p.sizes.includes("2T") || p.sizes.includes("3T"));
-    } else if (answers.age === "toddler") {
-      recommended = recommended.filter((p) => p.sizes.includes("2T") || p.sizes.includes("3T") || p.sizes.includes("4T"));
-    } else if (answers.age === "preschool") {
-      recommended = recommended.filter((p) => p.sizes.includes("4T") || p.sizes.includes("5") || p.sizes.includes("6"));
-    } else {
-      recommended = recommended.filter((p) => p.sizes.includes("6") || p.sizes.includes("7") || p.sizes.includes("8"));
+      // Age matching
+      if (answers.age === "infant") {
+        if (p.sizes.includes("2T") || p.sizes.includes("3T")) score += 30;
+        if (p.ageRange.includes("toddler")) score += 10;
+      } else if (answers.age === "toddler") {
+        if (p.ageRange.includes("toddler")) score += 30;
+        if (p.sizes.includes("2T") || p.sizes.includes("3T") || p.sizes.includes("4T")) score += 10;
+      } else if (answers.age === "preschool") {
+        if (p.ageRange.includes("preschool")) score += 30;
+        if (p.sizes.includes("4T") || p.sizes.includes("5") || p.sizes.includes("6")) score += 10;
+      } else if (answers.age === "school") {
+        if (p.ageRange.includes("school")) score += 30;
+        if (p.sizes.includes("6") || p.sizes.includes("7") || p.sizes.includes("8")) score += 10;
+      }
+
+      // Personality matching
+      if (answers.personality === "adventurous" || answers.personality === "silly") {
+        if (p.name.toLowerCase().includes("ramble") || p.name.toLowerCase().includes("dungaree") || p.name.toLowerCase().includes("jogger")) score += 25;
+        if (p.category === "rompers" || p.category === "bottoms") score += 10;
+      } else if (answers.personality === "creative") {
+        if (p.name.toLowerCase().includes("smock") || p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("hoodie")) score += 25;
+        if (p.category === "dresses" || p.category === "tops" || p.category === "layers") score += 10;
+      } else if (answers.personality === "gentle") {
+        if (p.name.toLowerCase().includes("cardigan") || p.name.toLowerCase().includes("pinafore") || p.name.toLowerCase().includes("smock")) score += 25;
+        if (p.category === "dresses" || p.category === "layers") score += 10;
+      }
+
+      // Occasion matching
+      if (answers.occasion === "party") {
+        if (p.colors.some((c) => c.name.toLowerCase().includes("pink") || c.name.toLowerCase().includes("yellow") || c.name.toLowerCase().includes("wildflower"))) score += 15;
+        if (p.category === "dresses") score += 10;
+      } else if (answers.occasion === "everyday") {
+        if (p.category === "bottoms" || p.category === "rompers") score += 15;
+        if (p.material.toLowerCase().includes("cotton") && p.material.toLowerCase().includes("linen")) score += 5;
+      } else if (answers.occasion === "photo") {
+        if (p.colors.some((c) => c.name.toLowerCase().includes("blush") || c.name.toLowerCase().includes("navy") || c.name.toLowerCase().includes("sage"))) score += 15;
+        score += 10; // all pieces are photo-ready
+      } else if (answers.occasion === "seasonal") {
+        if (p.name.toLowerCase().includes("cardigan") || p.name.toLowerCase().includes("hoodie") || p.name.toLowerCase().includes("pinafore")) score += 15;
+      }
+
+      // Style matching
+      if (answers.style === "boho") {
+        if (p.material.toLowerCase().includes("linen") || p.name.toLowerCase().includes("pinafore") || p.name.toLowerCase().includes("smock")) score += 15;
+      } else if (answers.style === "nautical") {
+        if (p.name.toLowerCase().includes("ocean") || p.name.toLowerCase().includes("stripe") || p.name.toLowerCase().includes("navy")) score += 15;
+        if (p.category === "tops" || p.category === "bottoms") score += 5;
+      } else if (answers.style === "colorful") {
+        if (p.colors.length > 1) score += 10;
+        if (p.name.toLowerCase().includes("tie-dye") || p.name.toLowerCase().includes("rainbow") || p.name.toLowerCase().includes("comet")) score += 15;
+      } else if (answers.style === "cozy") {
+        if (p.category === "layers" || p.name.toLowerCase().includes("jogger") || p.name.toLowerCase().includes("cardigan")) score += 15;
+        if (p.material.toLowerCase().includes("french terry") || p.material.toLowerCase().includes("fleece")) score += 5;
+      }
+
+      return { product: p, score };
+    });
+
+    // Sort by score descending, take top 4
+    scored.sort((a, b) => b.score - a.score);
+    const recommended = scored.slice(0, 4).map((s) => s.product);
+
+    // If somehow all scored 0, fallback to diverse picks
+    if (scored[0].score === 0) {
+      scored.sort(() => Math.random() - 0.5);
     }
 
-    if (answers.personality === "adventurous" || answers.personality === "silly") {
-      recommended = recommended.filter((p) =>
-        p.name.toLowerCase().includes("ramble") ||
-        p.name.toLowerCase().includes("dungaree") ||
-        p.name.toLowerCase().includes("jogger")
-      );
-    } else if (answers.personality === "creative") {
-      recommended = recommended.filter((p) =>
-        p.name.toLowerCase().includes("smock") ||
-        p.name.toLowerCase().includes("tee") ||
-        p.name.toLowerCase().includes("hoodie")
-      );
-    } else {
-      recommended = recommended.filter((p) =>
-        p.name.toLowerCase().includes("cardigan") ||
-        p.name.toLowerCase().includes("pinafore") ||
-        p.name.toLowerCase().includes("smock")
-      );
-    }
-
-    if (recommended.length < 3) {
-      recommended = products.filter(
-        (p) => p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("dungaree")
-      );
-    }
-
-    let title = "Your Perfect Picks!";
+    let title = "Your Perfect Picks!  ✨";
     if (answers.personality === "adventurous") title = "Adventure Awaits! 🌲";
     else if (answers.personality === "creative") title = "Creative Cuties! 🎨";
     else if (answers.personality === "gentle") title = "Cozy Comforts! 🧸";
