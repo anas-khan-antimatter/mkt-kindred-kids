@@ -120,11 +120,28 @@ export default function SizeGuidePage() {
               </Button>
             </div>
 
-            {recommended && (
+            {loading && (
+              <div className="mt-6 flex items-center justify-center py-4">
+                <p className="text-sm text-muted-foreground animate-pulse">Checking sizes…</p>
+              </div>
+            )}
+            {error && (
+              <div className="mt-6 rounded-xl bg-destructive/10 border border-destructive/30 p-4">
+                <p className="text-sm text-destructive">{error}</p>
+              </div>
+            )}
+            {recommended && !loading && (
               <div className="mt-6 rounded-xl bg-primary/5 border border-primary/20 p-4">
                 <p className="text-sm text-muted-foreground">Recommended size:</p>
                 <p className="text-3xl font-bold text-primary mt-1">{recommended}</p>
-                <p className="text-xs text-muted-foreground mt-1">
+                {recoDetails && (
+                  <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
+                    <div><span className="font-semibold">Height:</span> {recoDetails.height}</div>
+                    <div><span className="font-semibold">Weight:</span> {recoDetails.weight}</div>
+                    <div><span className="font-semibold">Chest:</span> {recoDetails.chest}</div>
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground mt-2">
                   Based on a height of {height}&quot; and weight of {weight} lbs
                 </p>
               </div>
