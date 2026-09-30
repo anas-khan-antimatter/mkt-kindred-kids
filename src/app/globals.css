@@ -132,6 +132,11 @@
     @apply bg-gradient-to-br from-[oklch(0.95_0.04_60)] via-[oklch(0.94_0.03_110)] to-[oklch(0.93_0.04_200)];
   }
 
+  /* Illustrated card — solid pastel with subtle inner glow for storybook feel */
+  .bg-illustrated {
+    @apply bg-gradient-to-br from-white/90 via-white/50 to-white/30;
+  }
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.72_0.16_30)] to-[oklch(0.68_0.10_210)];
   }
@@ -139,6 +144,11 @@
   /* Playful soft shadow for floating elements */
   .shadow-soft {
     @apply shadow-sm shadow-[oklch(0.70_0.04_260)/0.08];
+  }
+
+  /* Softer, pillowy shadow for cards that feel huggable */
+  .shadow-pillow {
+    @apply shadow-[0_4px_24px_-4px_oklch(0.70_0.04_260)/0.10];
   }
 
   /* Bouncy entrance — for cards/sections */
@@ -154,5 +164,58 @@
   /* Dotted decorative border */
   .border-doodle {
     @apply border-2 border-dashed border-current/20 rounded-3xl;
+  }
+
+  /* Illustrated dot pattern background (subtle) */
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, oklch(0.70_0.04_260)/0.06 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Wavy underline for playful emphasis */
+  .underline-wavy {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: oklch(0.72_0.16_30)/0.3;
+    text-underline-offset: 4px;
+  }
+
+  /* Soft inner border for illustrated cards */
+  .card-illustrated {
+    @apply rounded-2xl border border-white/60 bg-gradient-to-br from-white/95 via-white/70 to-white/40 shadow-pillow backdrop-blur-sm;
+  }
+
+  /* Hand-drawn-style circle accent */
+  .dot-accent {
+    @apply inline-block h-2 w-2 rounded-full;
+  }
+
+  /* Sticker-style badge */
+  .badge-sticker {
+    @apply rounded-full px-3 py-0.5 text-xs font-medium border-2 border-current/20 shadow-sm;
+  }
+
+  /* Floaty entrance animation */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* Wiggle animation for icons on hover */
+  .animate-wiggle {
+    animation: wiggle 0.4s ease-in-out;
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+  }
+
+  /* Softer card hover */
+  .card-hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-pillow;
   }
 }
