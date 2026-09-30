@@ -1,16 +1,30 @@
 {
   "root": "/tmp/am-ws/c-1790732968742-bn6mm",
   "name": "c-1790732968742-bn6mm",
-  "generatedAt": "2026-09-30T14:42:54.490Z",
-  "fileCount": 2,
-  "dirCount": 1,
+  "generatedAt": "2026-09-30T16:43:15.130Z",
+  "fileCount": 8,
+  "dirCount": 2,
   "languages": {
-    "Markdown": 1
+    "Markdown": 6,
+    "JSON": 1
   },
   "keyFiles": [
     "README.md"
   ],
   "directories": [
+    {
+      "dir": ".antimatter/wiki",
+      "fileCount": 6,
+      "files": [
+        "index.md",
+        "log.md",
+        "map.json",
+        "map.md",
+        "overview.md",
+        "schema.md"
+      ],
+      "symbols": []
+    },
     {
       "dir": "(root)",
       "fileCount": 2,
