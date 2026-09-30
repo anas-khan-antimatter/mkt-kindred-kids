@@ -1,4 +1,46 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
 import { Leaf, Heart, Recycle, TreePine, ShieldCheck, Globe } from "lucide-react";
+
+/* ── Animated counter ── */
+function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const counted = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !counted.current) {
+          counted.current = true;
+          const duration = 1500;
+          const steps = 30;
+          const increment = target / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              setCount(target);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}{suffix}
+    </span>
+  );
+}
 
 const stories = [
   {
@@ -56,28 +98,34 @@ export default function SustainabilityPage() {
             </p>
           </div>
         </div>
-        {/* Decorative elements */}
         <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-green-200/30" />
         <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-emerald-200/30" />
       </section>
 
-      {/* Impact stats */}
+      {/* Impact stats — animated */}
       <section className="mx-auto max-w-7xl px-4 -mt-8 sm:px-6 lg:px-8">
         <div className="grid gap-4 sm:grid-cols-3">
-          {[
-            { label: "Trees Planted", value: "12,000+", icon: TreePine },
-            { label: "Organic Cotton", value: "100%", icon: Leaf },
-            { label: "Plastic-Free Orders", value: "100%", icon: Recycle },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-xl bg-white shadow-sm border border-border/40 p-6 text-center"
-            >
-              <stat.icon className="mx-auto h-6 w-6 text-green-600" />
-              <p className="mt-3 text-3xl font-bold text-green-700">{stat.value}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
-            </div>
-          ))}
+          <div className="rounded-xl bg-white shadow-sm border border-border/30 p-6 text-center">
+            <TreePine className="mx-auto h-6 w-6 text-green-600" />
+            <p className="mt-3 text-3xl font-bold text-green-700">
+              <AnimatedCounter target={12000} suffix="+" />
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">Trees Planted</p>
+          </div>
+          <div className="rounded-xl bg-white shadow-sm border border-border/30 p-6 text-center">
+            <Leaf className="mx-auto h-6 w-6 text-green-600" />
+            <p className="mt-3 text-3xl font-bold text-green-700">
+              <AnimatedCounter target={100} suffix="%" />
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">Organic Cotton</p>
+          </div>
+          <div className="rounded-xl bg-white shadow-sm border border-border/30 p-6 text-center">
+            <Recycle className="mx-auto h-6 w-6 text-green-600" />
+            <p className="mt-3 text-3xl font-bold text-green-700">
+              <AnimatedCounter target={100} suffix="%" />
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">Plastic-Free Orders</p>
+          </div>
         </div>
       </section>
 
@@ -103,7 +151,7 @@ export default function SustainabilityPage() {
       </section>
 
       {/* CTA */}
-      <section className="border-t border-border/40 bg-green-50/50 py-16">
+      <section className="border-t border-border/30 bg-green-50/50 py-16">
         <div className="mx-auto max-w-xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold tracking-tight">Join the Kindred Circle</h2>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -112,7 +160,7 @@ export default function SustainabilityPage() {
           <div className="mt-6">
             <a
               href="/collections"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-green-700 px-6 text-sm font-medium text-white shadow transition-colors hover:bg-green-800"
+              className="inline-flex h-10 items-center justify-center rounded-full bg-green-700 px-6 text-sm font-medium text-white shadow transition-colors hover:bg-green-800"
             >
               Shop the Collection
             </a>
