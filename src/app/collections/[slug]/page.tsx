@@ -2,13 +2,30 @@
 
 import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
-import { ChevronLeft, ShoppingBag, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronLeft, ShoppingBag, Check, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/data";
 import { useCart } from "@/lib/cart-context";
+
+/* ── Wishlist helpers (localStorage) ── */
+function getWishlist(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem("kindred-wishlist") || "[]");
+  } catch {
+    return [];
+  }
+}
+function toggleWishlistId(id: string): string[] {
+  const current = getWishlist();
+  const idx = current.indexOf(id);
+  if (idx >= 0) current.splice(idx, 1);
+  else current.push(id);
+  localStorage.setItem("kindred-wishlist", JSON.stringify(current));
+  return [...current];
+}
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -18,6 +35,13 @@ export default function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState(product?.sizes[0] ?? "");
   const [selectedColor, setSelectedColor] = useState(product?.colors[0] ?? { name: "", hex: "" });
   const [added, setAdded] = useState(false);
+  const [inWishlist, setInWishlist] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      setInWishlist(getWishlist().includes(product.id));
+    }
+  }, [product]);
 
   if (!product) {
     notFound();
@@ -37,6 +61,11 @@ export default function ProductDetailPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const handleToggleWish = () => {
+    const updated = toggleWishlistId(product.id);
+    setInWishlist(updated.includes(product.id));
+  };
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
@@ -50,7 +79,14 @@ export default function ProductDetailPage() {
 
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Image */}
-        <div className="aspect-[4/5] w-full rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center">
+        <div className="aspect-[4/5] w-full rounded-2xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center relative">
+          <button
+            onClick={handleToggleWish}
+            className="absolute top-3 left-3 h-8 w-8 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-sm transition-all hover:scale-110 active:scale-90 z-10"
+            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart className={`h-4 w-4 ${inWishlist ? "fill-primary text-primary" : "text-muted-foreground"}`} />
+          </button>
           <div className="text-8xl opacity-30 select-none">
             {product.category === "dresses"
               ? "👗"
