@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/size-guide", label: "Size Guide" },
   { href: "/sustainability", label: "Sustainability" },
   { href: "/gift-finder", label: "Gift Finder" },
+  { href: "/outfit-suggester", label: "Outfit Suggester" },
 ];
 
 export default function Header() {

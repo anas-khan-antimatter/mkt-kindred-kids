@@ -51,9 +51,9 @@ const playFeatures = [
   {
     emoji: "✨",
     title: "Outfit Suggester",
-    desc: "Mix & match pieces into dream outfits.",
-    href: "/lookbook",
-    label: "Get Inspired",
+    desc: "Tell us the mood & weather for a perfect coordinated look.",
+    href: "/outfit-suggester",
+    label: "Style Magic",
   },
   {
     emoji: "🌍",
