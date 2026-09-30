@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Sparkles, ArrowRight, ArrowLeft, RotateCcw, ShoppingBag } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Sparkles, ArrowRight, ArrowLeft, RotateCcw, ShoppingBag, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/lib/cart-context";
 import { products } from "@/lib/data";
+import { motion, AnimatePresence } from "motion/react"; // ✅ Framer Motion
 
 const questions = [
   {
@@ -59,6 +58,7 @@ export default function GiftFinderPage() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [result, setResult] = useState<{ title: string; picks: typeof products } | null>(null);
+  const [showResult, setShowResult] = useState(false);
   const { addItem } = useCart();
 
   const handleAnswer = (value: string) => {
@@ -68,15 +68,14 @@ export default function GiftFinderPage() {
     if (step < questions.length - 1) {
       setStep(step + 1);
     } else {
-      // Generate result
       generateResult(updated);
     }
   };
 
   const generateResult = (answers: Answers) => {
-    // Simple match logic
     let recommended = [...products];
 
+    // Age-based filter
     if (answers.age === "infant") {
       recommended = recommended.filter((p) => p.sizes.includes("2T") || p.sizes.includes("3T"));
     } else if (answers.age === "toddler") {
@@ -87,179 +86,268 @@ export default function GiftFinderPage() {
       recommended = recommended.filter((p) => p.sizes.includes("6") || p.sizes.includes("7") || p.sizes.includes("8"));
     }
 
+    // Personality-based filter
     if (answers.personality === "adventurous" || answers.personality === "silly") {
-      recommended = recommended.filter((p) => p.name.toLowerCase().includes("ramble") || p.name.toLowerCase().includes("dungaree") || p.name.toLowerCase().includes("jogger"));
+      recommended = recommended.filter((p) =>
+        p.name.toLowerCase().includes("ramble") ||
+        p.name.toLowerCase().includes("dungaree") ||
+        p.name.toLowerCase().includes("jogger")
+      );
     } else if (answers.personality === "creative") {
-      recommended = recommended.filter((p) => p.name.toLowerCase().includes("smock") || p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("hoodie"));
+      recommended = recommended.filter((p) =>
+        p.name.toLowerCase().includes("smock") ||
+        p.name.toLowerCase().includes("tee") ||
+        p.name.toLowerCase().includes("hoodie")
+      );
     } else {
-      recommended = recommended.filter((p) => p.name.toLowerCase().includes("cardigan") || p.name.toLowerCase().includes("pinafore") || p.name.toLowerCase().includes("smock"));
+      recommended = recommended.filter((p) =>
+        p.name.toLowerCase().includes("cardigan") ||
+        p.name.toLowerCase().includes("pinafore") ||
+        p.name.toLowerCase().includes("smock")
+      );
     }
 
     if (recommended.length < 3) {
-      recommended = products.filter((p) => p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("dungaree"));
+      recommended = products.filter(
+        (p) => p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("dungaree")
+      );
     }
 
     let title = "Your Perfect Picks!";
-    if (answers.personality === "adventurous") title = "Adventure Awaits!";
-    else if (answers.personality === "creative") title = "Creative Cuties!";
-    else if (answers.personality === "gentle") title = "Cozy Comforts!";
-    else if (answers.personality === "silly") title = "Playtime Picks!";
+    if (answers.personality === "adventurous") title = "Adventure Awaits! 🌲";
+    else if (answers.personality === "creative") title = "Creative Cuties! 🎨";
+    else if (answers.personality === "gentle") title = "Cozy Comforts! 🧸";
+    else if (answers.personality === "silly") title = "Playtime Picks! 🤪";
 
     setResult({ title, picks: recommended.slice(0, 4) });
+
+    // Stagger the reveal
+    setTimeout(() => setShowResult(true), 400);
   };
 
   const reset = () => {
     setStep(0);
     setAnswers({});
     setResult(null);
+    setShowResult(false);
   };
 
   const currentQuestion = questions[step];
+  const progressPct = result
+    ? 100
+    : Math.round(((step + 1) / questions.length) * 100);
 
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary/10 via-accent/20 to-secondary/10 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <section className="bg-gradient-to-br from-primary/10 via-accent/20 to-secondary/10 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            <Sparkles className="inline h-7 w-7 mr-2 text-primary" />
-            Gift Finder
-          </h1>
+          <Badge className="mb-3 bg-accent/20 text-accent-foreground border-0">
+            <Sparkles className="mr-1 h-3 w-3" />
+            Interactive Quiz
+          </Badge>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Gift Finder</h1>
           <p className="mt-3 text-muted-foreground max-w-xl">
-            Not sure what to get? Answer a few quick questions and we&apos;ll match you with the perfect pieces.
+            Not sure what to get? Answer 4 quick questions and we&apos;ll match you with the perfect pieces.
           </p>
         </div>
       </section>
 
-      {!result ? (
-        <section className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
-          {/* Progress */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">
-                Question {step + 1} of {questions.length}
-              </span>
-              <span className="text-sm font-medium">{Math.round(((step + 1) / questions.length) * 100)}%</span>
-            </div>
-            <div className="h-2 w-full rounded-full bg-muted">
-              <div
-                className="h-2 rounded-full bg-primary transition-all duration-500"
-                style={{ width: `${((step + 1) / questions.length) * 100}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Question card */}
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-6 sm:p-8">
-              <h2 className="text-xl font-semibold mb-6">{currentQuestion.question}</h2>
-
-              <RadioGroup
-                value={answers[currentQuestion.id] || ""}
-                onValueChange={handleAnswer}
-                className="space-y-3"
-              >
-                {currentQuestion.options.map((opt) => (
-                  <Label
-                    key={opt.value}
-                    className={`flex items-center gap-4 rounded-lg border p-4 cursor-pointer transition-all hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5 ${
-                      answers[currentQuestion.id] === opt.value ? "border-primary bg-primary/5" : "border-border"
-                    }`}
-                  >
-                    <RadioGroupItem value={opt.value} className="peer sr-only" />
-                    <span className="text-2xl">{opt.emoji}</span>
-                    <span className="font-medium">{opt.label}</span>
-                  </Label>
-                ))}
-              </RadioGroup>
-
-              <div className="mt-8 flex items-center justify-between">
-                <Button
-                  variant="ghost"
-                  onClick={() => step > 0 && setStep(step - 1)}
-                  disabled={step === 0}
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
-                </Button>
-                <Button variant="ghost" onClick={reset}>
-                  <RotateCcw className="mr-2 h-4 w-4" />
-                  Start Over
-                </Button>
+      <AnimatePresence mode="wait">
+        {!result ? (
+          /* ── Quiz ── */
+          <motion.section
+            key="quiz"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
+            className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8"
+          >
+            {/* Progress */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-muted-foreground">
+                  Question {step + 1} of {questions.length}
+                </span>
+                <span className="text-sm font-medium text-primary">{progressPct}%</span>
               </div>
-            </CardContent>
-          </Card>
-        </section>
-      ) : (
-        /* Results */
-        <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mb-10 text-center">
-            <Badge className="mb-3 bg-primary/10 text-primary border-0 text-sm px-4 py-1">
-              Quiz Complete!
-            </Badge>
-            <h2 className="text-3xl font-bold tracking-tight">{result.title}</h2>
-            <p className="mt-2 text-muted-foreground">
-              Based on your answers, here are the perfect picks for your little one.
-            </p>
-          </div>
+              <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full bg-primary"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressPct}%` }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                />
+              </div>
+            </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {result.picks.map((product) => (
-              <Card key={product.id} className="overflow-hidden border-0 bg-muted/30 shadow-sm transition-all hover:shadow-md">
-                <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative">
-                  <div className="text-5xl opacity-20 select-none">
-                    {product.category === "dresses" ? "👗" : product.category === "rompers" ? "🦺" : product.category === "tops" ? "👕" : product.category === "bottoms" ? "👖" : "🧥"}
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold text-sm">{product.name}</h3>
-                  <p className="mt-1 text-lg font-bold text-primary">${product.price}</p>
-                  <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{product.material}</p>
-                  <div className="mt-3 flex gap-1">
-                    {product.colors.map((color) => (
-                      <span
-                        key={color.name}
-                        className="inline-block h-3 w-3 rounded-full border border-border"
-                        style={{ backgroundColor: color.hex }}
-                      />
-                    ))}
-                  </div>
-                  <Button
-                    size="sm"
-                    className="w-full mt-3 text-xs"
-                    onClick={() =>
-                      addItem({
-                        id: product.id,
-                        name: product.name,
-                        price: product.price,
-                        size: product.sizes[0],
-                        color: product.colors[0].name,
-                        image: product.image,
-                        quantity: 1,
-                      })
-                    }
+            {/* Question */}
+            <Card className="border-0 shadow-soft overflow-hidden">
+              <CardContent className="p-6 sm:p-8">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentQuestion.id}
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <ShoppingBag className="mr-1 h-3 w-3" />
-                    Add to Bag
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <h2 className="text-xl font-semibold mb-6">{currentQuestion.question}</h2>
 
-          <div className="mt-10 text-center space-x-3">
-            <Button onClick={reset} variant="outline">
-              <RotateCcw className="mr-2 h-4 w-4" />
-              Try Again
-            </Button>
-            <Button asChild>
-              <a href="/collections">
-                View All <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-        </section>
-      )}
+                    <div className="space-y-3">
+                      {currentQuestion.options.map((opt) => {
+                        const selected = answers[currentQuestion.id] === opt.value;
+                        return (
+                          <motion.button
+                            key={opt.value}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                            onClick={() => handleAnswer(opt.value)}
+                            className={`flex w-full items-center gap-4 rounded-xl border p-4 cursor-pointer transition-all text-left ${
+                              selected
+                                ? "border-primary bg-primary/5 shadow-sm"
+                                : "border-border hover:border-muted-foreground/40 hover:bg-accent/30"
+                            }`}
+                          >
+                            <span className="text-2xl shrink-0">{opt.emoji}</span>
+                            <span className="font-medium">{opt.label}</span>
+                            {selected && (
+                              <motion.span
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs"
+                              >
+                                <Check className="h-3.5 w-3.5" />
+                              </motion.span>
+                            )}
+                          </motion.button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="mt-8 flex items-center justify-between">
+                  <Button
+                    variant="ghost"
+                    onClick={() => step > 0 && setStep(step - 1)}
+                    disabled={step === 0}
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back
+                  </Button>
+                  <Button variant="ghost" onClick={reset}>
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    Start Over
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.section>
+        ) : (
+          /* ── Results ── */
+          <motion.section
+            key="results"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8"
+          >
+            <div className="mb-10 text-center">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 12 }}
+              >
+                <Badge className="mb-3 bg-primary/10 text-primary border-0 text-sm px-5 py-1">
+                  Quiz Complete! 🎉
+                </Badge>
+              </motion.div>
+              <h2 className="text-3xl font-bold tracking-tight">{result.title}</h2>
+              <p className="mt-2 text-muted-foreground">
+                Based on your answers, here are the perfect picks for your little one.
+              </p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {result.picks.map((product, idx) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={showResult ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: idx * 0.12, duration: 0.4, ease: "easeOut" }}
+                >
+                  <Card className="overflow-hidden border-0 bg-pastel-card shadow-soft transition-all hover:shadow-md">
+                    <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative">
+                      <span className="text-5xl opacity-60 select-none">
+                        {product.category === "dresses"
+                          ? "👗"
+                          : product.category === "rompers"
+                          ? "🦺"
+                          : product.category === "tops"
+                          ? "👕"
+                          : product.category === "bottoms"
+                          ? "👖"
+                          : "🧥"}
+                      </span>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-sm">{product.name}</h3>
+                      <p className="mt-1 text-lg font-bold text-primary">${product.price}</p>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{product.material}</p>
+                      <div className="mt-2 flex gap-1">
+                        {product.colors.map((color) => (
+                          <span
+                            key={color.name}
+                            className="inline-block h-3 w-3 rounded-full border border-border"
+                            style={{ backgroundColor: color.hex }}
+                          />
+                        ))}
+                      </div>
+                      <Button
+                        size="sm"
+                        className="w-full mt-3 text-xs rounded-full"
+                        onClick={() =>
+                          addItem({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            size: product.sizes[0],
+                            color: product.colors[0].name,
+                            image: product.image,
+                            quantity: 1,
+                          })
+                        }
+                      >
+                        <ShoppingBag className="mr-1 h-3 w-3" />
+                        Add to Bag
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={showResult ? { opacity: 1 } : {}}
+              transition={{ delay: 0.6 }}
+              className="mt-10 text-center space-x-3"
+            >
+              <Button onClick={reset} variant="outline" className="rounded-full">
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Try Again
+              </Button>
+              <Button asChild className="rounded-full">
+                <a href="/collections">
+                  View All <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </motion.div>
+          </motion.section>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
