@@ -8,44 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { sizeChart } from "@/lib/data";
 import { Ruler, ArrowRight, RotateCcw } from "lucide-react";
 
-/* ── Rough size-recommendation logic ── */
-function recommendSize(heightIn: number, weightLbs: number): string {
-  const all = [...sizeChart.infants, ...sizeChart.kids];
-
-  // Score each size by distance from both height and weight
-  let best = all[0].size;
-  let bestScore = Infinity;
-
-  for (const row of all) {
-    const hRange = row.height.replace(/[^0-9\-]/g, "").split("-");
-    const wRange = row.weight.replace(/[^0-9\-]/g, "").split("-");
-
-    const hLow = Number(hRange[0]) || 0;
-    const hHigh = hRange.length > 1 ? Number(hRange[1]) : hLow + 10;
-    const wLow = Number(wRange[0]) || 0;
-    const wHigh = wRange.length > 1 ? Number(wRange[1]) : wLow + 10;
-
-    const hMid = (hLow + hHigh) / 2;
-    const wMid = (wLow + wHigh) / 2;
-
-    const normH = (heightIn - hMid) / (hHigh - hLow || 1);
-    const normW = (weightLbs - wMid) / (wHigh - wLow || 1);
-
-    const score = Math.abs(normH) + Math.abs(normW);
-
-    // Also prefer "within range" heavily
-    const inRange = heightIn >= hLow && heightIn <= hHigh && weightLbs >= wLow && weightLbs <= wHigh;
-    const effectiveScore = inRange ? score * 0.5 : score;
-
-    if (effectiveScore < bestScore) {
-      bestScore = effectiveScore;
-      best = row.size;
-    }
-  }
-
-  return best;
-}
-
 export default function SizeGuidePage() {
   const [tab, setTab] = useState("kids");
 
@@ -53,12 +15,34 @@ export default function SizeGuidePage() {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [recommended, setRecommended] = useState<string | null>(null);
+  const [recoDetails, setRecoDetails] = useState<Record<string, string> | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleRecommend = () => {
+  const handleRecommend = async () => {
     const h = parseFloat(height);
     const w = parseFloat(weight);
     if (isNaN(h) || isNaN(w) || h <= 0 || w <= 0) return;
-    setRecommended(recommendSize(h, w));
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/size", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ height: h, weight: w }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRecommended(data.size);
+        setRecoDetails(data.details);
+      } else {
+        const err = await res.json().catch(() => ({ error: "Server error" }));
+        setError(err.error);
+      }
+    } catch {
+      setError("Could not connect. Please try again.");
+    }
+    setLoading(false);
   };
 
   const resetRecommender = () => {
