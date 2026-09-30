@@ -1,0 +1,23 @@
+{
+  "root": "/tmp/am-ws/ch_muna7iwb_1",
+  "name": "ch_muna7iwb_1",
+  "generatedAt": "2026-09-29T23:02:41.548Z",
+  "fileCount": 1,
+  "dirCount": 1,
+  "languages": {
+    "Markdown": 1
+  },
+  "keyFiles": [
+    "README.md"
+  ],
+  "directories": [
+    {
+      "dir": "(root)",
+      "fileCount": 1,
+      "files": [
+        "README.md"
+      ],
+      "symbols": []
+    }
+  ]
+}
