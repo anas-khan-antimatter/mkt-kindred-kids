@@ -1,0 +1,24 @@
+{
+  "root": "/tmp/am-ws/c-1790732968742-bn6mm",
+  "name": "c-1790732968742-bn6mm",
+  "generatedAt": "2026-09-30T14:42:54.490Z",
+  "fileCount": 2,
+  "dirCount": 1,
+  "languages": {
+    "Markdown": 1
+  },
+  "keyFiles": [
+    "README.md"
+  ],
+  "directories": [
+    {
+      "dir": "(root)",
+      "fileCount": 2,
+      "files": [
+        ".gitignore",
+        "README.md"
+      ],
+      "symbols": []
+    }
+  ]
+}
