@@ -1,14 +1,14 @@
 {
   "root": "/tmp/am-ws/c-1790732968742-bn6mm",
   "name": "c-1790732968742-bn6mm",
-  "generatedAt": "2026-09-30T17:46:28.428Z",
-  "fileCount": 49,
-  "dirCount": 13,
+  "generatedAt": "2026-09-30T22:11:28.111Z",
+  "fileCount": 51,
+  "dirCount": 15,
   "languages": {
     "Markdown": 8,
     "JSON": 5,
     "JavaScript": 2,
-    "TypeScript": 26,
+    "TypeScript": 28,
     "CSS": 1
   },
   "keyFiles": [
@@ -77,6 +77,23 @@
       ]
     },
     {
+      "dir": "src/app/api/outfit",
+      "fileCount": 1,
+      "files": [
+        "route.ts"
+      ],
+      "symbols": [
+        {
+          "name": "POST",
+          "kind": "fn"
+        },
+        {
+          "name": "GET",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
       "dir": "src/app/collections",
       "fileCount": 1,
       "files": [
@@ -102,6 +119,14 @@
     },
     {
       "dir": "src/app/lookbook",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/outfit-suggester",
       "fileCount": 1,
       "files": [
         "page.tsx"

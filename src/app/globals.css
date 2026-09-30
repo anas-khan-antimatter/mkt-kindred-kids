@@ -47,48 +47,51 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── Kindred Kids palette: soft pastels for play ── */
+/* ── Kindred Kids — Washed Denim + Warm Cream editorial kidswear ── */
 :root {
-  --background: oklch(0.985 0.008 90);
-  --foreground: oklch(0.28 0.04 260);
-  --card: oklch(0.99 0.01 80);
-  --card-foreground: oklch(0.28 0.04 260);
-  --popover: oklch(0.99 0.01 80);
-  --popover-foreground: oklch(0.28 0.04 260);
+  /* Background: warm cream with a whisper of warmth */
+  --background: oklch(0.965 0.012 70);
+  /* Foreground: deep denim ink — editorial, not harsh black */
+  --foreground: oklch(0.255 0.035 265);
+  /* Card: slightly warmer cream than background */
+  --card: oklch(0.955 0.015 75);
+  --card-foreground: oklch(0.255 0.035 265);
+  --popover: oklch(0.955 0.015 75);
+  --popover-foreground: oklch(0.255 0.035 265);
 
-  /* Primary — warm coral blush */
-  --primary: oklch(0.72 0.16 30);
-  --primary-foreground: oklch(0.99 0 0);
+  /* Primary — washed denim blue (soft, faded, classic) */
+  --primary: oklch(0.52 0.07 255);
+  --primary-foreground: oklch(0.97 0 0);
 
-  /* Secondary — soft sky blue */
-  --secondary: oklch(0.68 0.10 210);
-  --secondary-foreground: oklch(0.99 0 0);
+  /* Secondary — warm terracotta/sand (editorial accent) */
+  --secondary: oklch(0.68 0.08 55);
+  --secondary-foreground: oklch(0.97 0 0);
 
-  /* Muted — barely-there warm */
-  --muted: oklch(0.96 0.015 60);
-  --muted-foreground: oklch(0.58 0.035 260);
+  /* Muted — very light stone/linen */
+  --muted: oklch(0.925 0.02 70);
+  --muted-foreground: oklch(0.48 0.03 260);
 
-  /* Accent — buttery yellow */
-  --accent: oklch(0.88 0.12 95);
-  --accent-foreground: oklch(0.28 0.04 260);
+  /* Accent — peach/warm coral (editorial pop) */
+  --accent: oklch(0.75 0.10 40);
+  --accent-foreground: oklch(0.255 0.035 265);
 
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.90 0.025 70);
-  --input: oklch(0.90 0.025 70);
-  --ring: oklch(0.72 0.16 30);
-  --chart-1: oklch(0.72 0.16 30);
-  --chart-2: oklch(0.68 0.10 210);
-  --chart-3: oklch(0.88 0.12 95);
-  --chart-4: oklch(0.70 0.12 140);
-  --chart-5: oklch(0.75 0.12 310);
-  --radius: 1rem;
-  --sidebar: oklch(0.985 0 0);
+  --border: oklch(0.86 0.025 75);
+  --input: oklch(0.86 0.025 75);
+  --ring: oklch(0.52 0.07 255);
+  --chart-1: oklch(0.52 0.07 255);
+  --chart-2: oklch(0.68 0.08 55);
+  --chart-3: oklch(0.75 0.10 40);
+  --chart-4: oklch(0.62 0.06 130);
+  --chart-5: oklch(0.58 0.05 290);
+  --radius: 0.875rem;
+  --sidebar: oklch(0.965 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent: oklch(0.955 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: oklch(0.89 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
 
@@ -103,43 +106,47 @@
     @apply font-sans;
   }
 
-  /* Softer, rounder everything */
   img, video, svg {
     @apply rounded-xl;
   }
 }
 
 @layer utilities {
-  /* Brand gradient — sunrise pastel sweep */
+  /* Brand gradient — editorial denim-wash sweep */
   .bg-brand-gradient {
-    @apply bg-gradient-to-br from-[oklch(0.92_0.10_80)] via-[oklch(0.94_0.06_50)] to-[oklch(0.90_0.08_220)];
+    @apply bg-gradient-to-br from-[oklch(0.92_0.04_80)] via-[oklch(0.88_0.03_60)] to-[oklch(0.82_0.05_255)];
   }
 
-  /* Warmer, kid-friendlier brand gradient */
+  /* Warmer editorial gradient */
   .bg-brand-warm {
-    @apply bg-gradient-to-br from-[oklch(0.94_0.08_30)] via-[oklch(0.90_0.06_90)] to-[oklch(0.92_0.07_170)];
+    @apply bg-gradient-to-br from-[oklch(0.90_0.05_50)] via-[oklch(0.88_0.04_85)] to-[oklch(0.86_0.04_180)];
   }
 
-  /* Pastel accent gradient for cards */
+  /* Pastel card gradient — soft editorial wash */
   .bg-pastel-card {
-    @apply bg-gradient-to-br from-[oklch(0.95_0.04_60)] via-[oklch(0.94_0.03_110)] to-[oklch(0.93_0.04_200)];
+    @apply bg-gradient-to-br from-[oklch(0.94_0.03_70)] via-[oklch(0.93_0.025_90)] to-[oklch(0.92_0.03_120)];
+  }
+
+  /* Denim wash accent */
+  .bg-denim-wash {
+    @apply bg-gradient-to-br from-[oklch(0.60_0.06_255)] via-[oklch(0.55_0.05_250)] to-[oklch(0.50_0.07_260)];
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.72_0.16_30)] to-[oklch(0.68_0.10_210)];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.52_0.07_255)] to-[oklch(0.68_0.08_55)];
   }
 
-  /* Playful soft shadow for floating elements */
+  /* Editorial soft shadow */
   .shadow-soft {
-    @apply shadow-sm shadow-[oklch(0.70_0.04_260)/0.08];
+    @apply shadow-sm shadow-[oklch(0.48_0.03_260)/0.08];
   }
 
-  /* Bouncy entrance — for cards/sections */
+  /* Bouncy entrance */
   .animate-bounce-in {
     @apply animate-in fade-in slide-in-from-bottom-4;
   }
 
-  /* Floaty badge style */
+  /* Pill badge style */
   .badge-pill {
     @apply rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary border-0;
   }
@@ -147,5 +154,10 @@
   /* Dotted decorative border */
   .border-doodle {
     @apply border-2 border-dashed border-current/20 rounded-3xl;
+  }
+
+  /* Denim-textured panel */
+  .bg-denim-texture {
+    @apply bg-gradient-to-br from-[oklch(0.55_0.05_255)] via-[oklch(0.58_0.04_250)] to-[oklch(0.50_0.06_260)];
   }
 }

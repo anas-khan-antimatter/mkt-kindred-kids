@@ -1,9 +1,9 @@
 # Workspace Map — c-1790732968742-bn6mm
-_Generated 2026-09-30 · 49 files · 13 directories_  
+_Generated 2026-09-30 · 51 files · 15 directories_  
 _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Map Workspace". Do not hand-edit._
 
 ## Languages
-- TypeScript: 26
+- TypeScript: 28
 - Markdown: 8
 - JSON: 5
 - JavaScript: 2
@@ -28,6 +28,10 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - symbols: metadata (const)
 - files: favicon.ico, globals.css, layout.tsx, page.tsx
 
+### `src/app/api/outfit` — 1 file
+- symbols: POST (fn), GET (fn)
+- files: route.ts
+
 ### `src/app/collections` — 1 file
 - files: page.tsx
 
@@ -38,6 +42,9 @@ _Deterministic structural map. Regenerate with the `map` tool or "Antimatter: Ma
 - files: page.tsx
 
 ### `src/app/lookbook` — 1 file
+- files: page.tsx
+
+### `src/app/outfit-suggester` — 1 file
 - files: page.tsx
 
 ### `src/app/size-guide` — 1 file
