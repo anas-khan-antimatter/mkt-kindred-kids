@@ -6,6 +6,8 @@ export interface Product {
   image: string;
   images: string[];
   category: string;
+  season: string[];
+  ageRange: string[];
   sizes: string[];
   colors: { name: string; hex: string }[];
   material: string;
