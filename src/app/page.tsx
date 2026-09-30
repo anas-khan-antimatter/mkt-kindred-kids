@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Sparkles, Heart, ShoppingBag, Smile, Bird, Cloud, Star, PartyPopper, Palette } from "lucide-react";
+import { ArrowRight, Sparkles, Heart, ShoppingBag, Bird, Star, PartyPopper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -74,11 +74,10 @@ export default function Home() {
           {heroIcons.map((icon, i) => (
             <span
               key={i}
-              className="absolute text-4xl opacity-30 animate-float"
+              className="absolute text-4xl opacity-30"
               style={{
                 top: `${10 + (i * 9) % 80}%`,
                 left: `${5 + (i * 13) % 90}%`,
-                animation: `float ${3 + (i % 3)}s ease-in-out infinite`,
                 transform: `rotate(${i * 18}deg)`,
               }}
             >
@@ -95,7 +94,7 @@ export default function Home() {
             </Badge>
             <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Dressed for
-              <span className="block text-gradient bg-gradient-to-r from-[oklch(0.85_0.15_30)] via-[oklch(0.90_0.10_70)] to-[oklch(0.82_0.12_200)] mt-2">
+              <span className="block text-gradient mt-2">
                 wild adventures
               </span>
             </h1>
@@ -113,8 +112,8 @@ export default function Home() {
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full">
                 <Link href="/lookbook">
-                  <Palette className="mr-2 h-4 w-4" />
                   View Lookbook
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
@@ -134,7 +133,7 @@ export default function Home() {
             <Link
               key={f.href}
               href={f.href}
-              className="group rounded-2xl bg-pastel-card border border-doodle border-[oklch(0.88_0.04_60)/40] p-5 text-center transition-all hover:shadow-soft hover:-translate-y-0.5"
+              className="group rounded-2xl bg-pastel-card border-2 border-dashed border-current/20 p-5 text-center transition-all hover:shadow-soft hover:-translate-y-0.5"
             >
               <span className="text-4xl block mb-2">{f.emoji}</span>
               <h3 className="font-semibold text-sm">{f.title}</h3>
@@ -171,7 +170,7 @@ export default function Home() {
                   </span>
                   {/* Decorative dots */}
                   <div className="absolute bottom-2 right-2 flex gap-1">
-                    {Array.from({ length: 3 }, (_, i) => (
+                    {[0, 1, 2].map((i) => (
                       <span key={i} className="h-1.5 w-1.5 rounded-full bg-current/20" />
                     ))}
                   </div>
