@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import { Scale, ArrowRight, RotateCcw, Ruler, Heart, ShoppingBag, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Scale, ArrowRight, RotateCcw, Ruler, ShoppingBag, Check, Sparkles, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { products } from "@/lib/data";
 import { useCart } from "@/lib/cart-context";
+
+const categoryMeta: Record<string, { emoji: string }> = {
+  dresses: { emoji: "👗" },
+  rompers: { emoji: "🦺" },
+  tops: { emoji: "👕" },
+  bottoms: { emoji: "👖" },
+  layers: { emoji: "🧥" },
+};
+
+/* ── Wishlist helpers ── */
+function getWishlist(): string[] {
+  try { return JSON.parse(localStorage.getItem("kindred-wishlist") || "[]"); }
+  catch { return []; }
+}
+function toggleWishlistId(id: string): string[] {
+  const current = getWishlist();
+  const idx = current.indexOf(id);
+  if (idx >= 0) current.splice(idx, 1);
+  else current.push(id);
+  localStorage.setItem("kindred-wishlist", JSON.stringify(current));
+  return [...current];
+}
 
 export default function WeightPage() {
   const [height, setHeight] = useState("");
@@ -18,7 +40,13 @@ export default function WeightPage() {
   const [error, setError] = useState<string | null>(null);
   const [suggestedProducts, setSuggestedProducts] = useState<typeof products>([]);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [showAllSizes, setShowAllSizes] = useState(false);
   const { addItem } = useCart();
+
+  useEffect(() => {
+    setWishlist(getWishlist());
+  }, []);
 
   const handleRecommend = async () => {
     const h = parseFloat(height) || 0;
@@ -39,8 +67,6 @@ export default function WeightPage() {
         setRecommended(data.size);
         setRecoGroup(data.group);
         setRecoDetails(data.details);
-
-        // Suggest products available in this size
         const size = data.size;
         const matched = products.filter((p) => p.sizes.includes(size));
         setSuggestedProducts(matched.slice(0, 4));
@@ -61,6 +87,7 @@ export default function WeightPage() {
     setRecoDetails(null);
     setSuggestedProducts([]);
     setError(null);
+    setShowAllSizes(false);
   };
 
   const handleAddProduct = (product: (typeof products)[0]) => {
@@ -73,23 +100,43 @@ export default function WeightPage() {
       image: product.image,
       quantity: 1,
     });
-    const newSet = new Set(addedIds);
-    newSet.add(product.id);
-    setAddedIds(newSet);
+    setAddedIds((prev) => new Set(prev).add(product.id));
   };
+
+  const toggleWish = (id: string) => {
+    const updated = toggleWishlistId(id);
+    setWishlist(updated);
+  };
+
+  const sizeChart = [
+    { size: "0-3M", height: 'Up to 24"', weight: "Up to 14 lbs" },
+    { size: "3-6M", height: '24–27"', weight: "14–18 lbs" },
+    { size: "6-12M", height: '27–30"', weight: "18–24 lbs" },
+    { size: "12-18M", height: '30–33"', weight: "24–28 lbs" },
+    { size: "18-24M", height: '33–35"', weight: "28–30 lbs" },
+    { size: "2T", height: '35–37"', weight: "30–32 lbs" },
+    { size: "3T", height: '37–39"', weight: "32–35 lbs" },
+    { size: "4T", height: '39–41"', weight: "35–39 lbs" },
+    { size: "5", height: '41–44"', weight: "39–45 lbs" },
+    { size: "6", height: '44–47"', weight: "45–50 lbs" },
+    { size: "7", height: '47–50"', weight: "50–57 lbs" },
+    { size: "8", height: '50–53"', weight: "57–65 lbs" },
+  ];
+
+  const visibleSizes = showAllSizes ? sizeChart : sizeChart.slice(0, 6);
 
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <section className="bg-denim-wash px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <Badge className="mb-3 bg-accent/20 text-accent-foreground border-0">
-            <Ruler className="mr-1 h-3 w-3" />
+          <Badge className="mb-3 bg-white/15 text-white border-0 backdrop-blur-sm">
+            <Sparkles className="mr-1 h-3 w-3" />
             New Tool
           </Badge>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Size Recommender</h1>
-          <p className="mt-3 text-muted-foreground max-w-xl">
-            Enter your child&apos;s height and weight and we&apos;ll tell you the perfect size — plus show you pieces that fit.
+          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Size Recommender</h1>
+          <p className="mt-3 text-white/70 max-w-xl">
+            Not sure which size fits your little one? Enter their height and weight — we&apos;ll recommend the perfect size and show you pieces that match.
           </p>
         </div>
       </section>
@@ -111,7 +158,7 @@ export default function WeightPage() {
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-1.5">
-                  Height <span className="text-xs text-muted-foreground">(inches) — optional but helps accuracy</span>
+                  Height <span className="text-xs text-muted-foreground">(inches) — optional</span>
                 </label>
                 <input
                   type="number"
@@ -146,173 +193,172 @@ export default function WeightPage() {
                 className="rounded-full shadow-sm"
               >
                 {loading ? (
-                  <span className="animate-pulse">Checking…</span>
+                  <span className="animate-pulse flex items-center gap-2">
+                    <span className="inline-block h-4 w-4 rounded-full border-2 border-current border-t-transparent animate-spin" />
+                    Finding size…
+                  </span>
                 ) : (
                   <>
                     <Ruler className="mr-2 h-4 w-4" />
-                    Find Their Size
+                    Get My Size
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </>
                 )}
               </Button>
-              <Button variant="ghost" size="sm" onClick={resetForm} className="text-xs">
-                <RotateCcw className="mr-1 h-3 w-3" />
-                Reset
-              </Button>
+              {recommended && (
+                <Button variant="ghost" size="sm" onClick={resetForm} className="text-xs rounded-full">
+                  <RotateCcw className="mr-1 h-3 w-3" />
+                  Start Over
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
 
-        {/* ── Loading State ── */}
-        {loading && (
-          <div className="mb-10 flex items-center justify-center py-8">
-            <div className="rounded-2xl bg-card-soft p-8 text-center shadow-soft animate-in fade-in">
-              <span className="text-5xl block mb-3 animate-bounce">📐</span>
-              <p className="text-muted-foreground animate-pulse">Finding the perfect size…</p>
-            </div>
+        {/* ── Results ── */}
+        {error && (
+          <div className="mb-10 rounded-xl bg-destructive/5 border border-destructive/20 p-5 text-center">
+            <span className="text-2xl block mb-2">😔</span>
+            <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
 
-        {/* ── Error State ── */}
-        {error && !loading && (
-          <div className="mb-10 rounded-xl bg-destructive/10 border border-destructive/30 p-5 animate-in fade-in slide-in-from-top-2">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">😕</span>
-              <div>
-                <h3 className="font-semibold text-sm text-destructive">Something went wrong</h3>
-                <p className="text-xs text-destructive/70 mt-1">{error}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Result ── */}
-        {recommended && !loading && (
+        {recommended && recoDetails && (
           <>
-            {/* Size Recommendation */}
-            <div className="mb-10 rounded-2xl bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5 border-2 border-primary/20 p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <div className="flex items-center gap-4 mb-2">
-                <span className="text-4xl">🎯</span>
-                <div>
-                  <Badge className="bg-accent/20 text-accent-foreground border-0 text-xs">Recommended</Badge>
-                  <h2 className="text-2xl font-bold mt-1">
-                    Size <span className="text-primary text-3xl">{recommended}</span>
+            <div className="mb-10 rounded-2xl bg-caramel-fade border-2 border-primary/20 p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="flex flex-col sm:flex-row items-center gap-5">
+                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                  <Ruler className="h-10 w-10 text-white" />
+                </div>
+                <div className="text-center sm:text-left">
+                  <Badge className="mb-2 bg-white/20 text-white border-0 backdrop-blur-sm text-xs">
+                    {recoGroup === "infants" ? "👶 Infant" : "🧒 Kids"} Size
+                  </Badge>
+                  <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                    We recommend size <span className="underline decoration-white/40 decoration-2 underline-offset-4">{recommended}</span>
                   </h2>
+                  <p className="text-white/70 text-sm mt-1">Based on {weight} lbs{height ? ` and ${height}" height` : ""}</p>
                 </div>
               </div>
 
-              {recoDetails && (
-                <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                  <div className="rounded-xl bg-white/50 p-3 text-center">
-                    <span className="block text-xs text-muted-foreground">Height Range</span>
-                    <span className="block text-lg font-semibold text-foreground mt-1">{recoDetails.height}</span>
-                  </div>
-                  <div className="rounded-xl bg-white/50 p-3 text-center">
-                    <span className="block text-xs text-muted-foreground">Weight Range</span>
-                    <span className="block text-lg font-semibold text-foreground mt-1">{recoDetails.weight}</span>
-                  </div>
-                  <div className="rounded-xl bg-white/50 p-3 text-center">
-                    <span className="block text-xs text-muted-foreground">Chest</span>
-                    <span className="block text-lg font-semibold text-foreground mt-1">{recoDetails.chest}</span>
-                  </div>
+              <div className="mt-5 grid grid-cols-3 gap-3 rounded-xl bg-white/10 backdrop-blur-sm p-4">
+                <div className="text-center">
+                  <p className="text-xs text-white/60">Height Range</p>
+                  <p className="text-white font-semibold">{recoDetails.height}</p>
                 </div>
-              )}
-
-              <div className="mt-4 text-xs text-muted-foreground">
-                Based on {height ? `${height}" height and ` : ""}{weight} lbs weight
-                {recoGroup === "infants" ? " — wearing infant sizing" : ""}
+                <div className="text-center">
+                  <p className="text-xs text-white/60">Weight Range</p>
+                  <p className="text-white font-semibold">{recoDetails.weight}</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-xs text-white/60">Chest</p>
+                  <p className="text-white font-semibold">{recoDetails.chest}</p>
+                </div>
               </div>
             </div>
 
-            {/* Suggested Products in this Size */}
+            {/* ── Suggested products ── */}
             {suggestedProducts.length > 0 && (
-              <div>
-                <h2 className="text-xl font-semibold mb-6 flex items-center gap-2">
-                  <ShoppingBag className="h-5 w-5 text-primary" />
-                  Pieces in Size {recommended}
-                  <span className="text-xs text-muted-foreground font-normal">({suggestedProducts.length} available)</span>
-                </h2>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {suggestedProducts.map((product) => (
-                    <Card
-                      key={product.id}
-                      className="group overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-md animate-in fade-in"
-                    >
-                      <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative overflow-hidden">
-                        <span className="text-5xl opacity-30 select-none">
-                          {product.category === "dresses"
-                            ? "👗"
-                            : product.category === "rompers"
-                            ? "🦺"
-                            : product.category === "tops"
-                            ? "👕"
-                            : product.category === "bottoms"
-                            ? "👖"
-                            : "🧥"}
-                        </span>
-                        <div className="absolute top-2 right-2">
-                          <Badge variant="secondary" className="text-xs bg-white/70 text-foreground border-0">
-                            {recommended}
+              <div className="mb-10">
+                <h3 className="text-lg font-semibold mb-4">Pieces that fit size {recommended}</h3>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {suggestedProducts.map((product) => {
+                    const inWishlist = wishlist.includes(product.id);
+                    const justAdded = addedIds.has(product.id);
+                    return (
+                      <Card key={product.id} className="overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-bouncy hover:-translate-y-0.5 group">
+                        <div className="aspect-square w-full bg-editorial flex items-center justify-center relative overflow-hidden">
+                          <span className="text-5xl opacity-25 select-none transition-transform duration-500 group-hover:scale-125">
+                            {categoryMeta[product.category]?.emoji || "🧵"}
+                          </span>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleWish(product.id); }}
+                            className="absolute top-2 left-2 h-7 w-7 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-sm transition-all hover:scale-110 active:scale-90"
+                            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+                          >
+                            <Heart className={`h-3.5 w-3.5 ${inWishlist ? "fill-primary text-primary" : "text-muted-foreground"}`} />
+                          </button>
+                          <Badge className="absolute top-2 right-2 text-[10px] bg-white/80 text-foreground border-0 backdrop-blur-sm shadow-sm">
+                            ${product.price}
                           </Badge>
                         </div>
-                      </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-semibold text-sm">{product.name}</h3>
-                        <p className="text-lg font-bold text-primary mt-1">${product.price}</p>
-                        <div className="mt-1 flex flex-wrap gap-1">
-                          {product.season.map((s) => (
-                            <span key={s} className="text-[10px] px-2 py-0.5 rounded-full bg-accent/20 text-accent-foreground">
-                              {s}
-                            </span>
-                          ))}
-                        </div>
-                        <Button
-                          size="sm"
-                          className="w-full mt-2 text-xs rounded-full"
-                          onClick={() => handleAddProduct(product)}
-                        >
-                          {addedIds.has(product.id) ? (
-                            <>
-                              <Check className="mr-1 h-3 w-3" />
-                              Added!
-                            </>
-                          ) : (
-                            <>
-                              <ShoppingBag className="mr-1 h-3 w-3" />
-                              Add to Bag
-                            </>
-                          )}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        <CardContent className="p-3">
+                          <h4 className="font-semibold text-sm truncate">{product.name}</h4>
+                          <div className="mt-1 flex gap-1">
+                            {product.colors.map((color) => (
+                              <span key={color.name} className="inline-block h-2.5 w-2.5 rounded-full border border-border/50" style={{ backgroundColor: color.hex }} />
+                            ))}
+                          </div>
+                          <Button
+                            size="sm"
+                            className={`w-full mt-2 text-xs rounded-full transition-all ${justAdded ? "bg-green-600 hover:bg-green-700" : ""}`}
+                            onClick={() => handleAddProduct(product)}
+                            disabled={justAdded}
+                          >
+                            {justAdded ? (
+                              <><Check className="mr-1 h-3 w-3" /> Added!</>
+                            ) : (
+                              <><ShoppingBag className="mr-1 h-3 w-3" /> Add to Bag</>
+                            )}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
           </>
         )}
 
-        {/* ── Empty / First-visit education ── */}
-        {!recommended && !loading && !error && (
-          <div className="rounded-2xl bg-card-soft p-6 sm:p-8 border border-border/30">
-            <div className="grid gap-6 sm:grid-cols-3 text-center">
-              <div>
-                <span className="text-3xl block mb-2">📏</span>
-                <h3 className="font-medium text-sm">Step 1</h3>
-                <p className="text-xs text-muted-foreground mt-1">Measure height &amp; weight at home</p>
-              </div>
-              <div>
-                <span className="text-3xl block mb-2">🔢</span>
-                <h3 className="font-medium text-sm">Step 2</h3>
-                <p className="text-xs text-muted-foreground mt-1">Enter values and get a size</p>
-              </div>
-              <div>
-                <span className="text-3xl block mb-2">🛍️</span>
-                <h3 className="font-medium text-sm">Step 3</h3>
-                <p className="text-xs text-muted-foreground mt-1">Shop pieces available in that size</p>
-              </div>
-            </div>
+        {/* ── Size reference chart ── */}
+        <div className="rounded-2xl bg-card-soft p-6 sm:p-8 border border-border/30">
+          <h3 className="text-lg font-semibold mb-1">Size Reference Chart</h3>
+          <p className="text-sm text-muted-foreground mb-5">Quick reference for all Kindred Kids sizes</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border/40">
+                  <th className="text-left py-3 px-2 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Size</th>
+                  <th className="text-left py-3 px-2 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Height</th>
+                  <th className="text-left py-3 px-2 font-semibold text-xs uppercase tracking-wider text-muted-foreground">Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleSizes.map((row, idx) => (
+                  <tr
+                    key={row.size}
+                    className={`border-b border-border/20 transition-colors hover:bg-muted/30 ${
+                      row.size === recommended ? "bg-primary/5 font-medium" : ""
+                    }`}
+                  >
+                    <td className={`py-3 px-2 ${row.size === recommended ? "text-primary" : ""}`}>
+                      {row.size === recommended ? (
+                        <span className="inline-flex items-center gap-1.5">
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground font-bold">✓</span>
+                          {row.size}
+                        </span>
+                      ) : (
+                        row.size
+                      )}
+                    </td>
+                    <td className="py-3 px-2 text-muted-foreground">{row.height}</td>
+                    <td className="py-3 px-2 text-muted-foreground">{row.weight}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        )}
+          {sizeChart.length > 6 && (
+            <button
+              onClick={() => setShowAllSizes(!showAllSizes)}
+              className="mt-4 text-xs text-primary hover:underline inline-flex items-center gap-1 transition-all"
+            >
+              {showAllSizes ? "Show fewer sizes" : `Show all ${sizeChart.length} sizes`}
+              <ArrowRight className={`h-3 w-3 transition-transform ${showAllSizes ? "rotate-90" : ""}`} />
+            </button>
+          )}
+        </div>
       </section>
     </div>
   );
