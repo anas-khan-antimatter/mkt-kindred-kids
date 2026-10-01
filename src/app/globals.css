@@ -48,30 +48,31 @@
 }
 
 :root {
-  --background: oklch(0.97 0.015 70);
-  --foreground: oklch(0.20 0.04 260);
-  --card: oklch(0.95 0.018 75);
-  --card-foreground: oklch(0.20 0.04 260);
-  --popover: oklch(0.95 0.018 75);
-  --popover-foreground: oklch(0.20 0.04 260);
-  --primary: oklch(0.50 0.075 255);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.65 0.09 50);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.92 0.022 70);
-  --muted-foreground: oklch(0.45 0.035 258);
-  --accent: oklch(0.73 0.11 38);
-  --accent-foreground: oklch(0.20 0.04 260);
-  --destructive: oklch(0.55 0.22 28);
-  --border: oklch(0.84 0.025 72);
-  --input: oklch(0.84 0.025 72);
-  --ring: oklch(0.50 0.075 255);
-  --chart-1: oklch(0.50 0.075 255);
-  --chart-2: oklch(0.65 0.09 50);
-  --chart-3: oklch(0.73 0.11 38);
-  --chart-4: oklch(0.60 0.065 130);
-  --chart-5: oklch(0.55 0.055 290);
-  --radius: 1rem;
+  /* Washed denim blue + warm cream palette — editorial kidswear */
+  --background: oklch(0.97 0.008 85);        /* warm cream */
+  --foreground: oklch(0.22 0.035 260);         /* deep denim ink */
+  --card: oklch(0.955 0.012 82);                /* cream card */
+  --card-foreground: oklch(0.22 0.035 260);
+  --popover: oklch(0.955 0.012 82);
+  --popover-foreground: oklch(0.22 0.035 260);
+  --primary: oklch(0.52 0.065 260);            /* washed denim blue */
+  --primary-foreground: oklch(0.98 0.002 85);
+  --secondary: oklch(0.68 0.07 45);            /* warm caramel */
+  --secondary-foreground: oklch(0.98 0.002 85);
+  --muted: oklch(0.93 0.015 82);               /* cream-gray */
+  --muted-foreground: oklch(0.50 0.04 258);    /* faded denim */
+  --accent: oklch(0.78 0.08 55);               /* warm ochre */
+  --accent-foreground: oklch(0.22 0.035 260);
+  --destructive: oklch(0.55 0.20 30);
+  --border: oklch(0.88 0.018 78);              /* warm border */
+  --input: oklch(0.88 0.018 78);
+  --ring: oklch(0.52 0.065 260);
+  --chart-1: oklch(0.52 0.065 260);
+  --chart-2: oklch(0.68 0.07 45);
+  --chart-3: oklch(0.78 0.08 55);
+  --chart-4: oklch(0.55 0.055 160);            /* sage */
+  --chart-5: oklch(0.48 0.05 290);             /* lavender */
+  --radius: 0.875rem;
   --sidebar: oklch(0.97 0 0);
   --sidebar-foreground: oklch(0.12 0 0);
   --sidebar-primary: oklch(0.18 0 0);
@@ -88,47 +89,44 @@
   html { @apply font-sans; }
 }
 
-/* Brand gradient classes - plain CSS, no @apply */
-.bg-denim-sunrise {
-  background: linear-gradient(to bottom right, oklch(0.90 0.025 72), oklch(0.75 0.07 260), oklch(0.55 0.075 255));
-}
-.bg-editorial-warm {
-  background: linear-gradient(to bottom right, oklch(0.92 0.03 65), oklch(0.80 0.07 42), oklch(0.70 0.09 50));
-}
-.bg-pastel-card {
-  background: linear-gradient(to bottom right, oklch(0.95 0.018 75), oklch(0.935 0.02 85), oklch(0.92 0.022 100));
-}
+/* Brand utility classes — plain CSS, no @apply */
 .bg-denim-wash {
-  background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
+  background: linear-gradient(135deg, oklch(0.52 0.065 260), oklch(0.45 0.055 255), oklch(0.48 0.06 258));
 }
-.bg-terrazzo {
-  background: linear-gradient(to bottom right, oklch(0.90 0.02 70), oklch(0.85 0.04 60), oklch(0.80 0.06 55));
+.bg-cream-warm {
+  background: linear-gradient(135deg, oklch(0.97 0.008 85), oklch(0.94 0.015 80), oklch(0.92 0.02 75));
 }
-.text-gradient {
-  background: linear-gradient(to right, oklch(0.50 0.075 255), oklch(0.65 0.09 50));
+.bg-card-soft {
+  background: linear-gradient(135deg, oklch(0.955 0.012 82), oklch(0.94 0.015 78));
+}
+.bg-caramel-fade {
+  background: linear-gradient(135deg, oklch(0.72 0.07 48), oklch(0.62 0.075 42));
+}
+.bg-editorial {
+  background: linear-gradient(135deg, oklch(0.93 0.018 80), oklch(0.88 0.025 72));
+}
+.text-gradient-denim {
+  background: linear-gradient(to right, oklch(0.52 0.065 260), oklch(0.68 0.07 45));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .shadow-soft {
-  box-shadow: 0 4px 6px -1px oklch(0.45 0.035 258 / 0.06), 0 2px 4px -2px oklch(0.45 0.035 258 / 0.04);
+  box-shadow: 0 2px 8px oklch(0.45 0.04 258 / 0.06), 0 1px 3px oklch(0.45 0.04 258 / 0.04);
 }
 .shadow-bouncy {
-  box-shadow: 0 10px 15px -3px oklch(0.50 0.075 255 / 0.08), 0 4px 6px -4px oklch(0.50 0.075 255 / 0.04);
+  box-shadow: 0 8px 20px oklch(0.52 0.065 260 / 0.08), 0 3px 8px oklch(0.52 0.065 260 / 0.04);
 }
 .badge-pill {
   border-radius: 9999px;
-  background: oklch(0.50 0.075 255 / 0.1);
+  background: oklch(0.52 0.065 260 / 0.1);
   padding: 0.125rem 1rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: oklch(0.50 0.075 255);
+  color: oklch(0.52 0.065 260);
   border: 0;
 }
 .border-doodle {
-  border: 2px dashed;
-  opacity: 0.25;
+  border: 2px dashed oklch(0.52 0.065 260 / 0.2);
   border-radius: 1.5rem;
 }
-.icon-float { opacity: 0.3; user-select: none; transition: transform 0.3s; }
-.icon-float:hover { transform: scale(1.1); }

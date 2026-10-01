@@ -1,14 +1,14 @@
 {
   "root": "/tmp/am-ws/c-1790732968742-bn6mm",
   "name": "c-1790732968742-bn6mm",
-  "generatedAt": "2026-10-01T04:02:19.395Z",
-  "fileCount": 52,
-  "dirCount": 16,
+  "generatedAt": "2026-10-01T05:07:41.127Z",
+  "fileCount": 54,
+  "dirCount": 18,
   "languages": {
+    "JSON": 6,
     "Markdown": 8,
-    "JSON": 5,
     "JavaScript": 2,
-    "TypeScript": 29,
+    "TypeScript": 30,
     "CSS": 1
   },
   "keyFiles": [
@@ -17,6 +17,14 @@
     "tsconfig.json"
   ],
   "directories": [
+    {
+      "dir": ".antimatter/lanes",
+      "fileCount": 1,
+      "files": [
+        "ship.json"
+      ],
+      "symbols": []
+    },
     {
       "dir": ".antimatter/wiki",
       "fileCount": 6,
@@ -101,6 +109,10 @@
       ],
       "symbols": [
         {
+          "name": "GET",
+          "kind": "fn"
+        },
+        {
           "name": "POST",
           "kind": "fn"
         }
@@ -156,6 +168,14 @@
     },
     {
       "dir": "src/app/sustainability",
+      "fileCount": 1,
+      "files": [
+        "page.tsx"
+      ],
+      "symbols": []
+    },
+    {
+      "dir": "src/app/weight",
       "fileCount": 1,
       "files": [
         "page.tsx"
