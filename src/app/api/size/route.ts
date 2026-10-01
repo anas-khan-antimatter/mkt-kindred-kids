@@ -91,6 +91,16 @@ function recommendSize(heightIn: number, weightLbs: number): {
   };
 }
 
+export async function GET() {
+  return NextResponse.json({
+    description: "POST /api/size with { height, weight } to get a size recommendation",
+    fields: {
+      height: "number (inches, required)",
+      weight: "number (lbs, required)",
+    },
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));

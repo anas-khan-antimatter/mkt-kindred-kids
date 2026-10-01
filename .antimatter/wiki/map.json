@@ -1,14 +1,14 @@
 {
   "root": "/tmp/am-ws/c-1790732968742-bn6mm",
   "name": "c-1790732968742-bn6mm",
-  "generatedAt": "2026-09-30T22:11:28.111Z",
-  "fileCount": 51,
-  "dirCount": 15,
+  "generatedAt": "2026-10-01T04:02:19.395Z",
+  "fileCount": 52,
+  "dirCount": 16,
   "languages": {
     "Markdown": 8,
     "JSON": 5,
     "JavaScript": 2,
-    "TypeScript": 28,
+    "TypeScript": 29,
     "CSS": 1
   },
   "keyFiles": [
@@ -89,6 +89,19 @@
         },
         {
           "name": "GET",
+          "kind": "fn"
+        }
+      ]
+    },
+    {
+      "dir": "src/app/api/size",
+      "fileCount": 1,
+      "files": [
+        "route.ts"
+      ],
+      "symbols": [
+        {
+          "name": "POST",
           "kind": "fn"
         }
       ]
