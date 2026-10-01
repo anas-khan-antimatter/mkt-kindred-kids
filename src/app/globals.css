@@ -121,56 +121,53 @@
 }
 
 @layer utilities {
-  /* ── SIGNATURE BRAND GRADIENTS ── */
+  /* ── SIGNATURE BRAND GRADIENTS (plain CSS classes) ── */
 
-  /* Denim sunrise — washed blue sweeping into warm cream */
   .bg-denim-sunrise {
-    @apply bg-gradient-to-br from-[oklch(0.90_0.025_72)] via-[oklch(0.75_0.07_260)] to-[oklch(0.55_0.075_255)];
+    background: linear-gradient(to bottom right, oklch(0.90 0.025 72), oklch(0.75 0.07 260), oklch(0.55 0.075 255));
   }
 
-  /* Warm editorial — coral blush into oat */
   .bg-editorial-warm {
-    @apply bg-gradient-to-br from-[oklch(0.92_0.03_65)] via-[oklch(0.80_0.07_42)] to-[oklch(0.70_0.09_50)];
+    background: linear-gradient(to bottom right, oklch(0.92 0.03 65), oklch(0.80 0.07 42), oklch(0.70 0.09 50));
   }
 
-  /* Pastel card — soft cream with a hint of sky */
   .bg-pastel-card {
-    @apply bg-gradient-to-br from-[oklch(0.95_0.018_75)] via-[oklch(0.935_0.02_85)] to-[oklch(0.92_0.022_100)];
+    background: linear-gradient(to bottom right, oklch(0.95 0.018 75), oklch(0.935 0.02 85), oklch(0.92 0.022 100));
   }
 
-  /* Denim wash — faded blue jean panel */
   .bg-denim-wash {
-    @apply bg-gradient-to-br from-[oklch(0.58_0.065_260)] via-[oklch(0.52_0.07_255)] to-[oklch(0.47_0.075_252)];
+    background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
   }
 
-  /* Terrazzo speckle (for accent panels) */
   .bg-terrazzo {
-    @apply bg-gradient-to-br from-[oklch(0.90_0.02_70)] via-[oklch(0.85_0.04_60)] to-[oklch(0.80_0.06_55)];
+    background: linear-gradient(to bottom right, oklch(0.90 0.02 70), oklch(0.85 0.04 60), oklch(0.80 0.06 55));
   }
 
-  /* Text gradient — denim → sandstone */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.50_0.075_255)] to-[oklch(0.65_0.09_50)];
+    background: linear-gradient(to right, oklch(0.50 0.075 255), oklch(0.65 0.09 50));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   /* ── SHADOWS & DEPTH ── */
 
   .shadow-soft {
-    @apply shadow-md shadow-[oklch(0.45_0.035_258)/0.06];
+    box-shadow: 0 4px 6px -1px oklch(0.45 0.035 258 / 0.06), 0 2px 4px -2px oklch(0.45 0.035 258 / 0.04);
   }
 
   .shadow-bouncy {
-    @apply shadow-lg shadow-[oklch(0.50_0.075_255)/0.08];
+    box-shadow: 0 10px 15px -3px oklch(0.50 0.075 255 / 0.08), 0 4px 6px -4px oklch(0.50 0.075 255 / 0.04);
   }
 
   /* ── ANIMATIONS ── */
 
   .animate-bounce-in {
-    @apply animate-in fade-in zoom-in duration-400;
+    animation: kbounce-in 0.4s ease-out both;
   }
 
   .animate-float-up {
-    @apply animate-in fade-in slide-in-from-bottom-6 duration-350;
+    animation: kfloat-up 0.35s ease-out both;
   }
 
   /* ── BADGES & PILLS ── */
@@ -180,7 +177,8 @@
   }
 
   .badge-denim {
-    @apply rounded-full bg-denim-wash text-primary-foreground px-4 py-0.5 text-xs font-medium border-0;
+    @apply rounded-full text-primary-foreground px-4 py-0.5 text-xs font-medium border-0;
+    background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
   }
 
   /* ── BORDERS ── */
@@ -190,37 +188,48 @@
   }
 
   .border-denim {
-    @apply border-2 border-[oklch(0.50_0.075_255)/20] rounded-2xl;
+    border: 2px solid oklch(0.50 0.075 255 / 0.2);
+    @apply rounded-2xl;
   }
 
   /* ── CARD VARIANTS ── */
 
   .card-editorial {
-    @apply rounded-3xl bg-pastel-card shadow-soft border-0;
+    @apply rounded-3xl shadow-soft border-0;
+    background: linear-gradient(to bottom right, oklch(0.95 0.018 75), oklch(0.935 0.02 85), oklch(0.92 0.022 100));
   }
 
   .card-denim {
-    @apply rounded-3xl bg-denim-wash text-primary-foreground shadow-bouncy border-0;
+    @apply rounded-3xl shadow-bouncy border-0 text-primary-foreground;
+    background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
   }
 
   .card-terrazzo {
-    @apply rounded-3xl bg-terrazzo shadow-soft border-0;
+    @apply rounded-3xl shadow-soft border-0;
+    background: linear-gradient(to bottom right, oklch(0.90 0.02 70), oklch(0.85 0.04 60), oklch(0.80 0.06 55));
   }
 
   /* ── BUTTON PRESETS ── */
 
   .btn-denim {
-    @apply bg-primary text-primary-foreground hover:bg-[oklch(0.45_0.075_255)] rounded-full shadow-sm;
+    @apply text-primary-foreground hover:bg-[oklch(0.45_0.075_255)] rounded-full shadow-sm;
+    background: oklch(0.50 0.075 255);
   }
 
   .btn-cream {
-    @apply bg-white text-foreground hover:bg-[oklch(0.94_0.015_75)] rounded-full shadow-sm;
+    @apply text-foreground hover:bg-[oklch(0.94_0.015_75)] rounded-full shadow-sm;
+    background: white;
   }
 
   /* ── ILLUSTRATED DECORATIVE ELEMENTS ── */
 
   .icon-float {
-    @apply opacity-30 select-none transition-transform duration-300 hover:scale-110;
+    opacity: 0.3;
+    user-select: none;
+    transition: transform 0.3s;
+  }
+  .icon-float:hover {
+    transform: scale(1.1);
   }
 
   .deco-dots {
@@ -228,7 +237,11 @@
   }
 
   .deco-dot {
-    @apply h-1.5 w-1.5 rounded-full bg-current/25;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background-color: currentColor;
+    opacity: 0.25;
   }
 
   /* ── QUIZ / STEP PROGRESS ── */
@@ -238,7 +251,8 @@
   }
 
   .step-indicator-fill {
-    @apply h-full rounded-full bg-primary transition-all duration-500 ease-out;
+    @apply h-full rounded-full bg-primary;
+    transition: width 0.5s ease-out;
   }
 
   /* ── EMPTY STATE ── */
@@ -254,7 +268,8 @@
   /* ── FIT / RECOMMENDATION CARDS ── */
 
   .reco-card {
-    @apply rounded-2xl bg-white/50 p-3 text-center;
+    @apply rounded-2xl p-3 text-center;
+    background: rgba(255, 255, 255, 0.5);
   }
 
   .reco-value {
@@ -264,10 +279,22 @@
   /* ── RESPONSIVE GRID GAPS ── */
 
   .grid-gap-md {
-    @apply gap-6;
+    gap: 1.5rem;
   }
 
   .grid-gap-lg {
-    @apply gap-8;
+    gap: 2rem;
   }
+}
+
+/* ── Keyframes for custom animations ── */
+@keyframes kbounce-in {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  50% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes kfloat-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
