@@ -1,0 +1,47 @@
+# antimatter-lane v2
+name: antimatter-lane
+on:
+  push:
+    tags:
+      - "antimatter-lane/*/*"
+permissions:
+  contents: read
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      runs_on: ${{ steps.plan.outputs.runs_on }}
+      container: ${{ steps.plan.outputs.container }}
+      timeout: ${{ steps.plan.outputs.timeout }}
+      lane: ${{ steps.plan.outputs.lane }}
+      has_container: ${{ steps.plan.outputs.has_container }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+      - id: plan
+        run: node .github/antimatter/lane-runner.mjs plan
+  run:
+    needs: plan
+    runs-on: ${{ fromJSON(needs.plan.outputs.runs_on) }}
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.timeout) }}
+    container: ${{ needs.plan.outputs.has_container == 'true' && fromJSON(needs.plan.outputs.container) || null }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: "20"
+      - name: Run lane
+        env:
+          AM_LANE_SECRETS: ${{ toJSON(secrets) }}
+        run: node .github/antimatter/lane-runner.mjs run
+        continue-on-error: true
+      - uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
+        if: always()
+        with:
+          name: lane-result
+          path: |
+            lane-result.json
+            lane-screenshots/**
+          if-no-files-found: warn
