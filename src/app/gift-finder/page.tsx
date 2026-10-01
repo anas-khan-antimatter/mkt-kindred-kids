@@ -75,7 +75,7 @@ function ResultCard({ product, addItem, delay }: { product: typeof products[0]; 
       className="animate-in fade-in slide-in-from-bottom-4 opacity-0 animation-delay-200 animation-fill-forwards"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <Card className="overflow-hidden border-0 bg-pastel-card shadow-soft transition-all hover:shadow-md">
+      <Card className="overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-md">
         <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative">
           <span className="text-5xl opacity-60 select-none">
             {product.category === "dresses"

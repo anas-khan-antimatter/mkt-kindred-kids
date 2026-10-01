@@ -56,13 +56,13 @@ export default function LookbookPage() {
             return (
               <div
                 key={look.id}
-                className="group overflow-hidden rounded-2xl bg-pastel-card border border-border/30 transition-all hover:shadow-soft"
+                className="group overflow-hidden rounded-2xl bg-card-soft border border-border/30 transition-all hover:shadow-soft"
               >
                 <button
                   className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => setActiveLook(isExpanded ? null : look.id)}
                 >
-                  <div className="aspect-[4/5] w-full bg-pastel-card flex items-center justify-center relative">
+                  <div className="aspect-[4/5] w-full bg-card-soft flex items-center justify-center relative">
                     <span className="text-7xl opacity-80 select-none transition-transform group-hover:scale-110 duration-300">
                       {emojis[look.id - 1]}
                     </span>
@@ -93,7 +93,7 @@ export default function LookbookPage() {
                             key={product.id}
                             className="flex items-center gap-3 rounded-xl bg-background/60 p-2.5 border border-border/30"
                           >
-                            <div className="h-12 w-12 shrink-0 rounded-lg bg-pastel-card flex items-center justify-center">
+                            <div className="h-12 w-12 shrink-0 rounded-lg bg-card-soft flex items-center justify-center">
                               <span className="text-lg opacity-60">
                                 {product.category === "dresses" ? "👗" : product.category === "rompers" ? "🦺" : product.category === "tops" ? "👕" : product.category === "bottoms" ? "👖" : "🧥"}
                               </span>
@@ -133,7 +133,7 @@ export default function LookbookPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-pastel-card border-t border-border/30 py-16">
+      <section className="bg-card-soft border-t border-border/30 py-16">
         <div className="mx-auto max-w-xl px-4 text-center sm:px-6">
           <span className="text-4xl block mb-2">✨</span>
           <h2 className="text-2xl font-bold tracking-tight">Create Your Own Look</h2>

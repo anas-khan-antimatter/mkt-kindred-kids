@@ -165,7 +165,7 @@ export default function WeightPage() {
         {/* ── Loading State ── */}
         {loading && (
           <div className="mb-10 flex items-center justify-center py-8">
-            <div className="rounded-2xl bg-pastel-card p-8 text-center shadow-soft animate-in fade-in">
+            <div className="rounded-2xl bg-card-soft p-8 text-center shadow-soft animate-in fade-in">
               <span className="text-5xl block mb-3 animate-bounce">📐</span>
               <p className="text-muted-foreground animate-pulse">Finding the perfect size…</p>
             </div>
@@ -235,7 +235,7 @@ export default function WeightPage() {
                   {suggestedProducts.map((product) => (
                     <Card
                       key={product.id}
-                      className="group overflow-hidden border-0 bg-pastel-card shadow-soft transition-all hover:shadow-md animate-in fade-in"
+                      className="group overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-md animate-in fade-in"
                     >
                       <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative overflow-hidden">
                         <span className="text-5xl opacity-30 select-none">
@@ -293,7 +293,7 @@ export default function WeightPage() {
 
         {/* ── Empty / First-visit education ── */}
         {!recommended && !loading && !error && (
-          <div className="rounded-2xl bg-pastel-card p-6 sm:p-8 border border-border/30">
+          <div className="rounded-2xl bg-card-soft p-6 sm:p-8 border border-border/30">
             <div className="grid gap-6 sm:grid-cols-3 text-center">
               <div>
                 <span className="text-3xl block mb-2">📏</span>

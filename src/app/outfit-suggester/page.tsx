@@ -38,7 +38,7 @@ function OutfitCard({ outfit, delay }: { outfit: Outfit; delay: number }) {
       className="animate-in fade-in slide-in-from-bottom-4 opacity-0 animation-fill-forwards"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <Card className="overflow-hidden border-0 bg-pastel-card shadow-soft transition-all hover:shadow-md group">
+      <Card className="overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-md group">
         <div className="bg-gradient-to-br from-primary/5 via-accent/10 to-secondary/5 p-5 text-center">
           <span className="text-5xl block mb-2 select-none">{outfit.emoji}</span>
           <h3 className="text-lg font-bold tracking-tight">{outfit.name}</h3>

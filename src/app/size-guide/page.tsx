@@ -153,7 +153,7 @@ export default function SizeGuidePage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold mb-4">How to Measure</h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            <Card className="border-0 bg-pastel-card shadow-soft">
+            <Card className="border-0 bg-card-soft shadow-soft">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl mb-2">📏</div>
                 <h3 className="font-medium text-sm">Height</h3>
@@ -162,7 +162,7 @@ export default function SizeGuidePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-0 bg-pastel-card shadow-soft">
+            <Card className="border-0 bg-card-soft shadow-soft">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl mb-2">🎯</div>
                 <h3 className="font-medium text-sm">Chest</h3>
@@ -171,7 +171,7 @@ export default function SizeGuidePage() {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-0 bg-pastel-card shadow-soft">
+            <Card className="border-0 bg-card-soft shadow-soft">
               <CardContent className="p-4 text-center">
                 <div className="text-2xl mb-2">🌀</div>
                 <h3 className="font-medium text-sm">Waist</h3>
@@ -246,7 +246,7 @@ export default function SizeGuidePage() {
         </Tabs>
 
         {/* Fit notes */}
-        <div className="mt-10 rounded-xl bg-pastel-card p-6 border border-border/30">
+        <div className="mt-10 rounded-xl bg-card-soft p-6 border border-border/30">
           <h3 className="font-semibold mb-2">Fit Notes</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li>• Our clothes are designed with room to grow — most styles have adjustable features and a relaxed fit.</li>
