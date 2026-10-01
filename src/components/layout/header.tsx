@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
   { href: "/lookbook", label: "Lookbook" },
+  { href: "/weight", label: "Size Recommender" },
   { href: "/size-guide", label: "Size Guide" },
   { href: "/sustainability", label: "Sustainability" },
   { href: "/gift-finder", label: "Gift Finder" },
