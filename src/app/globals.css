@@ -47,52 +47,61 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* ── Kindred Kids — Washed Denim + Warm Cream editorial kidswear ── */
+/* ═══════════════════════════════════════════════════════════
+   Kindred Kids — Design System
+   Soft modern kidswear · Washed denim blue + warm cream
+   Editorial, playful, unmistakable
+   ═══════════════════════════════════════════════════════════ */
+
 :root {
-  /* Background: warm cream with a whisper of warmth */
-  --background: oklch(0.965 0.012 70);
-  /* Foreground: deep denim ink — editorial, not harsh black */
-  --foreground: oklch(0.255 0.035 265);
-  /* Card: slightly warmer cream than background */
-  --card: oklch(0.955 0.015 75);
-  --card-foreground: oklch(0.255 0.035 265);
-  --popover: oklch(0.955 0.015 75);
-  --popover-foreground: oklch(0.255 0.035 265);
+  /* ── Canvas — warm cream, barrel-aged ░ */
+  --background: oklch(0.97 0.015 70);
+  /* ── Type — deep denim midnight (not black) */
+  --foreground: oklch(0.20 0.04 260);
+  /* ── Card — whipped cream with warmth */
+  --card: oklch(0.95 0.018 75);
+  --card-foreground: oklch(0.20 0.04 260);
+  --popover: oklch(0.95 0.018 75);
+  --popover-foreground: oklch(0.20 0.04 260);
 
-  /* Primary — washed denim blue (soft, faded, classic) */
-  --primary: oklch(0.52 0.07 255);
-  --primary-foreground: oklch(0.97 0 0);
+  /* ── Primary — Washed denim blue (faded, honest) */
+  --primary: oklch(0.50 0.075 255);
+  --primary-foreground: oklch(0.98 0 0);
 
-  /* Secondary — warm terracotta/sand (editorial accent) */
-  --secondary: oklch(0.68 0.08 55);
-  --secondary-foreground: oklch(0.97 0 0);
+  /* ── Secondary — Warm sandstone / terracotta blush */
+  --secondary: oklch(0.65 0.09 50);
+  --secondary-foreground: oklch(0.98 0 0);
 
-  /* Muted — very light stone/linen */
-  --muted: oklch(0.925 0.02 70);
-  --muted-foreground: oklch(0.48 0.03 260);
+  /* ── Muted — Oat milk / scrubbed linen */
+  --muted: oklch(0.92 0.022 70);
+  --muted-foreground: oklch(0.45 0.035 258);
 
-  /* Accent — peach/warm coral (editorial pop) */
-  --accent: oklch(0.75 0.10 40);
-  --accent-foreground: oklch(0.255 0.035 265);
+  /* ── Accent — Coral peach (editorial pop, not cartoon) */
+  --accent: oklch(0.73 0.11 38);
+  --accent-foreground: oklch(0.20 0.04 260);
 
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.86 0.025 75);
-  --input: oklch(0.86 0.025 75);
-  --ring: oklch(0.52 0.07 255);
-  --chart-1: oklch(0.52 0.07 255);
-  --chart-2: oklch(0.68 0.08 55);
-  --chart-3: oklch(0.75 0.10 40);
-  --chart-4: oklch(0.62 0.06 130);
-  --chart-5: oklch(0.58 0.05 290);
-  --radius: 0.875rem;
-  --sidebar: oklch(0.965 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --destructive: oklch(0.55 0.22 28);
+  --border: oklch(0.84 0.025 72);
+  --input: oklch(0.84 0.025 72);
+  --ring: oklch(0.50 0.075 255);
+  --chart-1: oklch(0.50 0.075 255);
+  --chart-2: oklch(0.65 0.09 50);
+  --chart-3: oklch(0.73 0.11 38);
+  --chart-4: oklch(0.60 0.065 130);
+  --chart-5: oklch(0.55 0.055 290);
+
+  /* ── Radii — extra pillowy */
+  --radius: 1rem;
+
+  /* ── Sidebar (not used directly) */
+  --sidebar: oklch(0.97 0 0);
+  --sidebar-foreground: oklch(0.12 0 0);
+  --sidebar-primary: oklch(0.18 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.955 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.89 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-accent: oklch(0.95 0 0);
+  --sidebar-accent-foreground: oklch(0.18 0 0);
+  --sidebar-border: oklch(0.87 0 0);
+  --sidebar-ring: oklch(0.68 0 0);
 }
 
 @layer base {
@@ -107,57 +116,158 @@
   }
 
   img, video, svg {
-    @apply rounded-xl;
+    @apply rounded-2xl;
   }
 }
 
 @layer utilities {
-  /* Brand gradient — editorial denim-wash sweep */
-  .bg-brand-gradient {
-    @apply bg-gradient-to-br from-[oklch(0.92_0.04_80)] via-[oklch(0.88_0.03_60)] to-[oklch(0.82_0.05_255)];
+  /* ── SIGNATURE BRAND GRADIENTS ── */
+
+  /* Denim sunrise — washed blue sweeping into warm cream */
+  .bg-denim-sunrise {
+    @apply bg-gradient-to-br from-[oklch(0.90_0.025_72)] via-[oklch(0.75_0.07_260)] to-[oklch(0.55_0.075_255)];
   }
 
-  /* Warmer editorial gradient */
-  .bg-brand-warm {
-    @apply bg-gradient-to-br from-[oklch(0.90_0.05_50)] via-[oklch(0.88_0.04_85)] to-[oklch(0.86_0.04_180)];
+  /* Warm editorial — coral blush into oat */
+  .bg-editorial-warm {
+    @apply bg-gradient-to-br from-[oklch(0.92_0.03_65)] via-[oklch(0.80_0.07_42)] to-[oklch(0.70_0.09_50)];
   }
 
-  /* Pastel card gradient — soft editorial wash */
+  /* Pastel card — soft cream with a hint of sky */
   .bg-pastel-card {
-    @apply bg-gradient-to-br from-[oklch(0.94_0.03_70)] via-[oklch(0.93_0.025_90)] to-[oklch(0.92_0.03_120)];
+    @apply bg-gradient-to-br from-[oklch(0.95_0.018_75)] via-[oklch(0.935_0.02_85)] to-[oklch(0.92_0.022_100)];
   }
 
-  /* Denim wash accent */
+  /* Denim wash — faded blue jean panel */
   .bg-denim-wash {
-    @apply bg-gradient-to-br from-[oklch(0.60_0.06_255)] via-[oklch(0.55_0.05_250)] to-[oklch(0.50_0.07_260)];
+    @apply bg-gradient-to-br from-[oklch(0.58_0.065_260)] via-[oklch(0.52_0.07_255)] to-[oklch(0.47_0.075_252)];
   }
 
+  /* Terrazzo speckle (for accent panels) */
+  .bg-terrazzo {
+    @apply bg-gradient-to-br from-[oklch(0.90_0.02_70)] via-[oklch(0.85_0.04_60)] to-[oklch(0.80_0.06_55)];
+  }
+
+  /* Text gradient — denim → sandstone */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.52_0.07_255)] to-[oklch(0.68_0.08_55)];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.50_0.075_255)] to-[oklch(0.65_0.09_50)];
   }
 
-  /* Editorial soft shadow */
+  /* ── SHADOWS & DEPTH ── */
+
   .shadow-soft {
-    @apply shadow-sm shadow-[oklch(0.48_0.03_260)/0.08];
+    @apply shadow-md shadow-[oklch(0.45_0.035_258)/0.06];
   }
 
-  /* Bouncy entrance */
+  .shadow-bouncy {
+    @apply shadow-lg shadow-[oklch(0.50_0.075_255)/0.08];
+  }
+
+  /* ── ANIMATIONS ── */
+
   .animate-bounce-in {
-    @apply animate-in fade-in slide-in-from-bottom-4;
+    @apply animate-in fade-in zoom-in duration-400;
   }
 
-  /* Pill badge style */
+  .animate-float-up {
+    @apply animate-in fade-in slide-in-from-bottom-6 duration-350;
+  }
+
+  /* ── BADGES & PILLS ── */
+
   .badge-pill {
-    @apply rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary border-0;
+    @apply rounded-full bg-primary/10 px-4 py-0.5 text-xs font-medium text-primary border-0;
   }
 
-  /* Dotted decorative border */
+  .badge-denim {
+    @apply rounded-full bg-denim-wash text-primary-foreground px-4 py-0.5 text-xs font-medium border-0;
+  }
+
+  /* ── BORDERS ── */
+
   .border-doodle {
-    @apply border-2 border-dashed border-current/20 rounded-3xl;
+    @apply border-2 border-dashed border-current/25 rounded-3xl;
   }
 
-  /* Denim-textured panel */
-  .bg-denim-texture {
-    @apply bg-gradient-to-br from-[oklch(0.55_0.05_255)] via-[oklch(0.58_0.04_250)] to-[oklch(0.50_0.06_260)];
+  .border-denim {
+    @apply border-2 border-[oklch(0.50_0.075_255)/20] rounded-2xl;
+  }
+
+  /* ── CARD VARIANTS ── */
+
+  .card-editorial {
+    @apply rounded-3xl bg-pastel-card shadow-soft border-0;
+  }
+
+  .card-denim {
+    @apply rounded-3xl bg-denim-wash text-primary-foreground shadow-bouncy border-0;
+  }
+
+  .card-terrazzo {
+    @apply rounded-3xl bg-terrazzo shadow-soft border-0;
+  }
+
+  /* ── BUTTON PRESETS ── */
+
+  .btn-denim {
+    @apply bg-primary text-primary-foreground hover:bg-[oklch(0.45_0.075_255)] rounded-full shadow-sm;
+  }
+
+  .btn-cream {
+    @apply bg-white text-foreground hover:bg-[oklch(0.94_0.015_75)] rounded-full shadow-sm;
+  }
+
+  /* ── ILLUSTRATED DECORATIVE ELEMENTS ── */
+
+  .icon-float {
+    @apply opacity-30 select-none transition-transform duration-300 hover:scale-110;
+  }
+
+  .deco-dots {
+    @apply flex gap-1;
+  }
+
+  .deco-dot {
+    @apply h-1.5 w-1.5 rounded-full bg-current/25;
+  }
+
+  /* ── QUIZ / STEP PROGRESS ── */
+
+  .step-indicator {
+    @apply h-2 w-full rounded-full bg-muted overflow-hidden;
+  }
+
+  .step-indicator-fill {
+    @apply h-full rounded-full bg-primary transition-all duration-500 ease-out;
+  }
+
+  /* ── EMPTY STATE ── */
+
+  .empty-state {
+    @apply text-center py-16;
+  }
+
+  .empty-icon {
+    @apply text-5xl block mb-3;
+  }
+
+  /* ── FIT / RECOMMENDATION CARDS ── */
+
+  .reco-card {
+    @apply rounded-2xl bg-white/50 p-3 text-center;
+  }
+
+  .reco-value {
+    @apply block text-lg font-semibold text-foreground mt-1;
+  }
+
+  /* ── RESPONSIVE GRID GAPS ── */
+
+  .grid-gap-md {
+    @apply gap-6;
+  }
+
+  .grid-gap-lg {
+    @apply gap-8;
   }
 }

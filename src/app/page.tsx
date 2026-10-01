@@ -253,7 +253,7 @@ export default function Home() {
 
       {/* ─── SIZE RECOMMENDER TEASER ─── */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <Link href="/size-guide" className="group grid gap-6 sm:grid-cols-2 items-center">
+        <Link href="/weight" className="group grid gap-6 sm:grid-cols-2 items-center">
           <div className="rounded-2xl bg-pastel-card p-6 text-center">
             <span className="text-6xl block mb-2">📏</span>
           </div>
