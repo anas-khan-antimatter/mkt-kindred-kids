@@ -54,20 +54,32 @@
    ═══════════════════════════════════════════════════════════ */
 
 :root {
+  /* ── Canvas — warm cream ── */
   --background: oklch(0.97 0.015 70);
+  /* ── Type — deep denim midnight (not black) ── */
   --foreground: oklch(0.20 0.04 260);
+  /* ── Card — whipped cream with warmth ── */
   --card: oklch(0.95 0.018 75);
   --card-foreground: oklch(0.20 0.04 260);
   --popover: oklch(0.95 0.018 75);
   --popover-foreground: oklch(0.20 0.04 260);
+
+  /* ── Primary — Washed denim blue ── */
   --primary: oklch(0.50 0.075 255);
   --primary-foreground: oklch(0.98 0 0);
+
+  /* ── Secondary — Warm sandstone / terracotta blush ── */
   --secondary: oklch(0.65 0.09 50);
   --secondary-foreground: oklch(0.98 0 0);
+
+  /* ── Muted — Oat milk / scrubbed linen ── */
   --muted: oklch(0.92 0.022 70);
   --muted-foreground: oklch(0.45 0.035 258);
+
+  /* ── Accent — Coral peach ── */
   --accent: oklch(0.73 0.11 38);
   --accent-foreground: oklch(0.20 0.04 260);
+
   --destructive: oklch(0.55 0.22 28);
   --border: oklch(0.84 0.025 72);
   --input: oklch(0.84 0.025 72);
@@ -77,7 +89,10 @@
   --chart-3: oklch(0.73 0.11 38);
   --chart-4: oklch(0.60 0.065 130);
   --chart-5: oklch(0.55 0.055 290);
+
+  /* ── Radii — extra pillowy ── */
   --radius: 1rem;
+
   --sidebar: oklch(0.97 0 0);
   --sidebar-foreground: oklch(0.12 0 0);
   --sidebar-primary: oklch(0.18 0 0);
@@ -100,42 +115,165 @@
   }
 }
 
-@layer utilities {
-  /* ── BRAND GRADIENTS ── */
-  .bg-denim-sunrise {
-    @apply bg-gradient-to-br from-[oklch(0.90_0.025_72)] via-[oklch(0.75_0.07_260)] to-[oklch(0.55_0.075_255)];
-  }
-  .bg-editorial-warm {
-    @apply bg-gradient-to-br from-[oklch(0.92_0.03_65)] via-[oklch(0.80_0.07_42)] to-[oklch(0.70_0.09_50)];
-  }
-  .bg-pastel-card {
-    @apply bg-gradient-to-br from-[oklch(0.95_0.018_75)] via-[oklch(0.935_0.02_85)] to-[oklch(0.92_0.022_100)];
-  }
-  .bg-denim-wash {
-    @apply bg-gradient-to-br from-[oklch(0.58_0.065_260)] via-[oklch(0.52_0.07_255)] to-[oklch(0.47_0.075_252)];
-  }
-  .bg-terrazzo {
-    @apply bg-gradient-to-br from-[oklch(0.90_0.02_70)] via-[oklch(0.85_0.04_60)] to-[oklch(0.80_0.06_55)];
-  }
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.50_0.075_255)] to-[oklch(0.65_0.09_50)];
-  }
+/* ── All custom utility classes use plain CSS, NOT @apply ── */
 
-  /* ── BADGES ── */
-  .badge-pill {
-    @apply rounded-full bg-primary/10 px-4 py-0.5 text-xs font-medium text-primary border-0;
-  }
+/* GRADIENTS */
+.bg-denim-sunrise {
+  background: linear-gradient(to bottom right, oklch(0.90 0.025 72), oklch(0.75 0.07 260), oklch(0.55 0.075 255));
+}
+.bg-editorial-warm {
+  background: linear-gradient(to bottom right, oklch(0.92 0.03 65), oklch(0.80 0.07 42), oklch(0.70 0.09 50));
+}
+.bg-pastel-card {
+  background: linear-gradient(to bottom right, oklch(0.95 0.018 75), oklch(0.935 0.02 85), oklch(0.92 0.022 100));
+}
+.bg-denim-wash {
+  background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
+}
+.bg-terrazzo {
+  background: linear-gradient(to bottom right, oklch(0.90 0.02 70), oklch(0.85 0.04 60), oklch(0.80 0.06 55));
+}
+.text-gradient {
+  background: linear-gradient(to right, oklch(0.50 0.075 255), oklch(0.65 0.09 50));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  /* ── ANIMATIONS ── */
-  .animate-bounce-in {
-    @apply animate-in fade-in zoom-in duration-400;
-  }
-  .animate-float-up {
-    @apply animate-in fade-in slide-in-from-bottom-6 duration-350;
-  }
+/* SHADOWS */
+.shadow-soft {
+  box-shadow: 0 4px 6px -1px oklch(0.45 0.035 258 / 0.06), 0 2px 4px -2px oklch(0.45 0.035 258 / 0.04);
+}
+.shadow-bouncy {
+  box-shadow: 0 10px 15px -3px oklch(0.50 0.075 255 / 0.08), 0 4px 6px -4px oklch(0.50 0.075 255 / 0.04);
+}
 
-  /* ── BORDERS ── */
-  .border-doodle {
-    @apply border-2 border-dashed border-current/25 rounded-3xl;
-  }
+/* ANIMATIONS */
+.animate-bounce-in {
+  animation: kindred-bounce-in 0.4s ease-out both;
+}
+.animate-float-up {
+  animation: kindred-float-up 0.35s ease-out both;
+}
+
+@keyframes kindred-bounce-in {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  50% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes kindred-float-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* BADGES */
+.badge-pill {
+  border-radius: 9999px;
+  background: oklch(0.50 0.075 255 / 0.1);
+  padding: 0.125rem 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: oklch(0.50 0.075 255);
+  border: 0;
+}
+.badge-denim {
+  border-radius: 9999px;
+  padding: 0.125rem 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  border: 0;
+  background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
+  color: oklch(0.98 0 0);
+}
+
+/* BORDERS */
+.border-doodle {
+  border: 2px dashed;
+  opacity: 0.25;
+  border-radius: 1.5rem;
+}
+.border-denim {
+  border: 2px solid oklch(0.50 0.075 255 / 0.2);
+  border-radius: 1rem;
+}
+
+/* CARD VARIANTS */
+.card-editorial {
+  border-radius: 1.5rem;
+  border: 0;
+  background: linear-gradient(to bottom right, oklch(0.95 0.018 75), oklch(0.935 0.02 85), oklch(0.92 0.022 100));
+  box-shadow: 0 4px 6px -1px oklch(0.45 0.035 258 / 0.06), 0 2px 4px -2px oklch(0.45 0.035 258 / 0.04);
+}
+.card-denim {
+  border-radius: 1.5rem;
+  border: 0;
+  background: linear-gradient(to bottom right, oklch(0.58 0.065 260), oklch(0.52 0.07 255), oklch(0.47 0.075 252));
+  color: oklch(0.98 0 0);
+  box-shadow: 0 10px 15px -3px oklch(0.50 0.075 255 / 0.08), 0 4px 6px -4px oklch(0.50 0.075 255 / 0.04);
+}
+.card-terrazzo {
+  border-radius: 1.5rem;
+  border: 0;
+  background: linear-gradient(to bottom right, oklch(0.90 0.02 70), oklch(0.85 0.04 60), oklch(0.80 0.06 55));
+  box-shadow: 0 4px 6px -1px oklch(0.45 0.035 258 / 0.06), 0 2px 4px -2px oklch(0.45 0.035 258 / 0.04);
+}
+
+/* DECORATIVE */
+.icon-float {
+  opacity: 0.3;
+  user-select: none;
+  transition: transform 0.3s;
+}
+.icon-float:hover {
+  transform: scale(1.1);
+}
+.deco-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: currentColor;
+  opacity: 0.25;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.empty-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+/* RECOMMENDATION CARDS */
+.reco-card {
+  border-radius: 1rem;
+  padding: 0.75rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.5);
+}
+.reco-value {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* STEP INDICATOR */
+.step-indicator {
+  height: 0.5rem;
+  width: 100%;
+  border-radius: 9999px;
+  background: oklch(0.92 0.022 70);
+  overflow: hidden;
+}
+.step-indicator-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: oklch(0.50 0.075 255);
+  transition: width 0.5s ease-out;
 }
