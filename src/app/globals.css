@@ -121,12 +121,9 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[oklch(0.50_0.075_255)] to-[oklch(0.65_0.09_50)];
   }
 
-  /* ── SHADOWS ── */
-  .shadow-soft {
-    @apply shadow-sm shadow-[oklch(0.45_0.035_258)/0.06];
-  }
-  .shadow-bouncy {
-    @apply shadow-lg shadow-[oklch(0.50_0.075_255)/0.08];
+  /* ── BADGES ── */
+  .badge-pill {
+    @apply rounded-full bg-primary/10 px-4 py-0.5 text-xs font-medium text-primary border-0;
   }
 
   /* ── ANIMATIONS ── */
@@ -137,74 +134,8 @@
     @apply animate-in fade-in slide-in-from-bottom-6 duration-350;
   }
 
-  /* ── BADGES ── */
-  .badge-pill {
-    @apply rounded-full bg-primary/10 px-4 py-0.5 text-xs font-medium text-primary border-0;
-  }
-  .badge-denim {
-    @apply rounded-full text-primary-foreground px-4 py-0.5 text-xs font-medium border-0;
-    @apply bg-gradient-to-br from-[oklch(0.50_0.075_255)] to-[oklch(0.47_0.075_252)];
-  }
-
   /* ── BORDERS ── */
   .border-doodle {
     @apply border-2 border-dashed border-current/25 rounded-3xl;
-  }
-  .border-denim {
-    @apply border-2 rounded-2xl;
-    border-color: oklch(0.50 0.075 255 / 0.2);
-  }
-
-  /* ── CARD VARIANTS ── */
-  .card-editorial {
-    @apply rounded-3xl shadow-soft shadow-bouncy border-0;
-    @apply bg-gradient-to-br from-[oklch(0.95_0.018_75)] via-[oklch(0.935_0.02_85)] to-[oklch(0.92_0.022_100)];
-  }
-  .card-denim {
-    @apply rounded-3xl shadow-bouncy border-0;
-    @apply bg-gradient-to-br from-[oklch(0.58_0.065_260)] via-[oklch(0.52_0.07_255)] to-[oklch(0.47_0.075_252)];
-    color: oklch(0.98 0 0);
-  }
-  .card-terrazzo {
-    @apply rounded-3xl shadow-soft border-0;
-    @apply bg-gradient-to-br from-[oklch(0.90_0.02_70)] via-[oklch(0.85_0.04_60)] to-[oklch(0.80_0.06_55)];
-  }
-
-  /* ── DECORATIVE ── */
-  .icon-float {
-    opacity: 0.3;
-    user-select: none;
-  }
-  .icon-float:hover {
-    transform: scale(1.1);
-  }
-  .deco-dot {
-    width: 0.375rem;
-    height: 0.375rem;
-    border-radius: 9999px;
-  }
-
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-  }
-  .empty-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 0.75rem;
-  }
-
-  /* ── RECOMMENDATION CARDS ── */
-  .reco-card {
-    @apply rounded-2xl p-3 text-center;
-    background: rgba(255, 255, 255, 0.5);
-  }
-  .reco-value {
-    display: block;
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-top: 0.25rem;
   }
 }
