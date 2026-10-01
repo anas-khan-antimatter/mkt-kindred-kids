@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Sparkles, ArrowRight, ArrowLeft, RotateCcw, ShoppingBag, Check } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Sparkles, ArrowRight, ArrowLeft, RotateCcw, ShoppingBag, Check, Heart, Star, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -51,73 +51,93 @@ const questions = [
   },
 ];
 
+const categoryMeta: Record<string, { emoji: string }> = {
+  dresses: { emoji: "👗" },
+  rompers: { emoji: "🦺" },
+  tops: { emoji: "👕" },
+  bottoms: { emoji: "👖" },
+  layers: { emoji: "🧥" },
+};
+
+const personalityResultTitles: Record<string, string> = {
+  adventurous: "For the Little Explorer",
+  creative: "For the Mini Maker",
+  gentle: "For the Cozy Cuddler",
+  silly: "For the Joyful Jester",
+};
+
+/* ── Wishlist helpers ── */
+function getWishlist(): string[] {
+  try { return JSON.parse(localStorage.getItem("kindred-wishlist") || "[]"); }
+  catch { return []; }
+}
+function toggleWishlistId(id: string): string[] {
+  const current = getWishlist();
+  const idx = current.indexOf(id);
+  if (idx >= 0) current.splice(idx, 1);
+  else current.push(id);
+  localStorage.setItem("kindred-wishlist", JSON.stringify(current));
+  return [...current];
+}
+
 type Answers = Record<string, string>;
 
-function ResultCard({ product, addItem, delay }: { product: typeof products[0]; addItem: (item: any) => void; delay: number }) {
+function ResultCard({ product, delay }: { product: typeof products[0]; delay: number }) {
   const [added, setAdded] = useState(false);
+  const [inWishlist, setInWishlist] = useState(false);
+  const { addItem } = useCart();
+
+  useEffect(() => {
+    setInWishlist(getWishlist().includes(product.id));
+  }, [product.id]);
 
   const handleAdd = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      size: product.sizes[0],
-      color: product.colors[0].name,
-      image: product.image,
-      quantity: 1,
-    });
+    addItem({ id: product.id, name: product.name, price: product.price, size: product.sizes[0], color: product.colors[0].name, image: product.image, quantity: 1 });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
 
+  const toggleWish = () => {
+    const updated = toggleWishlistId(product.id);
+    setInWishlist(updated.includes(product.id));
+  };
+
   return (
     <div
-      className="animate-in fade-in slide-in-from-bottom-4 opacity-0 animation-delay-200 animation-fill-forwards"
+      className="animate-in fade-in slide-in-from-bottom-4 duration-400 fill-mode-backwards"
       style={{ animationDelay: `${delay}ms` }}
     >
-      <Card className="overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-md">
-        <div className="aspect-square w-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center relative">
-          <span className="text-5xl opacity-60 select-none">
-            {product.category === "dresses"
-              ? "👗"
-              : product.category === "rompers"
-              ? "🦺"
-              : product.category === "tops"
-              ? "👕"
-              : product.category === "bottoms"
-              ? "👖"
-              : "🧥"}
+      <Card className="overflow-hidden border-0 bg-card-soft shadow-soft transition-all hover:shadow-bouncy hover:-translate-y-0.5 group">
+        <div className="aspect-square w-full bg-editorial flex items-center justify-center relative">
+          <span className="text-6xl opacity-40 select-none transition-transform duration-500 group-hover:scale-125">
+            {categoryMeta[product.category]?.emoji || "🧵"}
           </span>
+          {/* Wishlist heart */}
+          <button
+            onClick={(e) => { e.stopPropagation(); toggleWish(); }}
+            className="absolute top-2.5 left-2.5 h-7 w-7 flex items-center justify-center rounded-full bg-white/70 backdrop-blur-sm transition-all hover:scale-110 active:scale-90"
+            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart className={`h-3.5 w-3.5 ${inWishlist ? "fill-primary text-primary" : "text-muted-foreground"}`} />
+          </button>
+          <Badge className="absolute top-2.5 right-2.5 text-[10px] bg-white/80 text-foreground border-0 backdrop-blur-sm shadow-sm">
+            ${product.price}
+          </Badge>
         </div>
-        <CardContent className="p-4">
-          <h3 className="font-semibold text-sm">{product.name}</h3>
-          <p className="mt-1 text-lg font-bold text-primary">${product.price}</p>
-          <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{product.material}</p>
-          <div className="mt-2 flex gap-1">
+        <CardContent className="p-3.5">
+          <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">{product.name}</h3>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{product.material}</p>
+          <div className="mt-1.5 flex gap-1">
             {product.colors.map((color) => (
-              <span
-                key={color.name}
-                className="inline-block h-3 w-3 rounded-full border border-border"
-                style={{ backgroundColor: color.hex }}
-              />
+              <span key={color.name} className="inline-block h-2.5 w-2.5 rounded-full border border-border/50" style={{ backgroundColor: color.hex }} />
             ))}
           </div>
           <Button
             size="sm"
-            className={`w-full mt-3 text-xs rounded-full transition-all ${added ? "bg-green-600 hover:bg-green-700" : ""}`}
+            className={`w-full mt-2.5 text-xs rounded-full transition-all ${added ? "bg-green-600 hover:bg-green-700" : ""}`}
             onClick={handleAdd}
           >
-            {added ? (
-              <>
-                <Check className="mr-1 h-3 w-3" />
-                Added!
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="mr-1 h-3 w-3" />
-                Add to Bag
-              </>
-            )}
+            {added ? <><Check className="mr-1 h-3 w-3" /> Added!</> : <><ShoppingBag className="mr-1 h-3 w-3" /> Add to Bag</>}
           </Button>
         </CardContent>
       </Card>
@@ -130,6 +150,7 @@ export default function GiftFinderPage() {
   const [answers, setAnswers] = useState<Answers>({});
   const [result, setResult] = useState<{ title: string; picks: typeof products } | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [animKey, setAnimKey] = useState(0);
   const { addItem } = useCart();
 
   const handleAnswer = (value: string) => {
@@ -137,19 +158,25 @@ export default function GiftFinderPage() {
     setAnswers(updated);
 
     if (step < questions.length - 1) {
+      setAnimKey((k) => k + 1);
       setStep(step + 1);
     } else {
       generateResult(updated);
     }
   };
 
+  const handleBack = () => {
+    if (step > 0) {
+      setAnimKey((k) => k + 1);
+      setStep(step - 1);
+    }
+  };
+
   const generateResult = (answers: Answers) => {
-    // Score each product against the quiz answers for better matching
     type Scored = { product: typeof products[0]; score: number };
     const scored: Scored[] = products.map((p) => {
       let score = 0;
 
-      // Age matching
       if (answers.age === "infant") {
         if (p.sizes.includes("2T") || p.sizes.includes("3T")) score += 30;
         if (p.ageRange.includes("toddler")) score += 10;
@@ -164,200 +191,201 @@ export default function GiftFinderPage() {
         if (p.sizes.includes("6") || p.sizes.includes("7") || p.sizes.includes("8")) score += 10;
       }
 
-      // Personality matching
-      if (answers.personality === "adventurous" || answers.personality === "silly") {
-        if (p.name.toLowerCase().includes("ramble") || p.name.toLowerCase().includes("dungaree") || p.name.toLowerCase().includes("jogger")) score += 25;
-        if (p.category === "rompers" || p.category === "bottoms") score += 10;
+      if (answers.personality === "adventurous") {
+        if (p.category === "bottoms" || p.category === "rompers") score += 20;
       } else if (answers.personality === "creative") {
-        if (p.name.toLowerCase().includes("smock") || p.name.toLowerCase().includes("tee") || p.name.toLowerCase().includes("hoodie")) score += 25;
-        if (p.category === "dresses" || p.category === "tops" || p.category === "layers") score += 10;
+        if (p.colors.length > 1) score += 20;
+        if (p.name.toLowerCase().includes("bloom") || p.name.toLowerCase().includes("art")) score += 15;
       } else if (answers.personality === "gentle") {
-        if (p.name.toLowerCase().includes("cardigan") || p.name.toLowerCase().includes("pinafore") || p.name.toLowerCase().includes("smock")) score += 25;
-        if (p.category === "dresses" || p.category === "layers") score += 10;
+        if (p.material.toLowerCase().includes("cotton") || p.material.toLowerCase().includes("knit")) score += 20;
+        if (p.name.toLowerCase().includes("cloud") || p.name.toLowerCase().includes("bloom")) score += 15;
+      } else if (answers.personality === "silly") {
+        if (p.colors.some((c) => c.hex === "#f5d742" || c.hex === "#C23B22")) score += 15;
+        if (p.category === "tops" || p.category === "rompers") score += 15;
       }
 
-      // Occasion matching
-      if (answers.occasion === "party") {
-        if (p.colors.some((c) => c.name.toLowerCase().includes("pink") || c.name.toLowerCase().includes("yellow") || c.name.toLowerCase().includes("wildflower"))) score += 15;
-        if (p.category === "dresses") score += 10;
-      } else if (answers.occasion === "everyday") {
-        if (p.category === "bottoms" || p.category === "rompers") score += 15;
-        if (p.material.toLowerCase().includes("cotton") && p.material.toLowerCase().includes("linen")) score += 5;
+      if (answers.occasion === "everyday") {
+        if (p.price && p.price <= 40) score += 20;
+        if (p.category === "bottoms" || p.category === "tops") score += 10;
+      } else if (answers.occasion === "party") {
+        if (p.category === "dresses") score += 25;
+        if (p.name.toLowerCase().includes("dress") || p.name.toLowerCase().includes("bloom")) score += 15;
       } else if (answers.occasion === "photo") {
-        if (p.colors.some((c) => c.name.toLowerCase().includes("blush") || c.name.toLowerCase().includes("navy") || c.name.toLowerCase().includes("sage"))) score += 15;
-        score += 10; // all pieces are photo-ready
+        if (p.colors.length >= 2) score += 20;
+        if (p.details.length >= 3) score += 10;
       } else if (answers.occasion === "seasonal") {
-        if (p.name.toLowerCase().includes("cardigan") || p.name.toLowerCase().includes("hoodie") || p.name.toLowerCase().includes("pinafore")) score += 15;
+        if (p.season.length >= 2) score += 20;
       }
 
-      // Style matching
       if (answers.style === "boho") {
-        if (p.material.toLowerCase().includes("linen") || p.name.toLowerCase().includes("pinafore") || p.name.toLowerCase().includes("smock")) score += 15;
+        if (p.material.toLowerCase().includes("linen")) score += 25;
+        if (p.name.toLowerCase().includes("ramble") || p.name.toLowerCase().includes("bloom")) score += 15;
       } else if (answers.style === "nautical") {
-        if (p.name.toLowerCase().includes("ocean") || p.name.toLowerCase().includes("stripe") || p.name.toLowerCase().includes("navy")) score += 15;
-        if (p.category === "tops" || p.category === "bottoms") score += 5;
+        if (p.colors.some((c) => c.hex === "#1B2A4A" || c.hex === "#87CEEB")) score += 25;
       } else if (answers.style === "colorful") {
-        if (p.colors.length > 1) score += 10;
-        if (p.name.toLowerCase().includes("tie-dye") || p.name.toLowerCase().includes("rainbow") || p.name.toLowerCase().includes("comet")) score += 15;
+        if (p.colors.length >= 2) score += 20;
+        score += p.colors.length * 5;
       } else if (answers.style === "cozy") {
-        if (p.category === "layers" || p.name.toLowerCase().includes("jogger") || p.name.toLowerCase().includes("cardigan")) score += 15;
-        if (p.material.toLowerCase().includes("french terry") || p.material.toLowerCase().includes("fleece")) score += 5;
+        if (p.category === "layers" || p.category === "bottoms") score += 25;
+        if (p.name.toLowerCase().includes("cloud") || p.name.toLowerCase().includes("jogger")) score += 15;
       }
 
       return { product: p, score };
     });
 
-    // Sort by score descending, take top 4
     scored.sort((a, b) => b.score - a.score);
-    const recommended = scored.slice(0, 4).map((s) => s.product);
-
-    // If somehow all scored 0, fallback to diverse picks
-    if (scored[0].score === 0) {
-      scored.sort(() => Math.random() - 0.5);
-    }
-
-    let title = "Your Perfect Picks!  ✨";
-    if (answers.personality === "adventurous") title = "Adventure Awaits! 🌲";
-    else if (answers.personality === "creative") title = "Creative Cuties! 🎨";
-    else if (answers.personality === "gentle") title = "Cozy Comforts! 🧸";
-    else if (answers.personality === "silly") title = "Playtime Picks! 🤪";
-
-    setResult({ title, picks: recommended.slice(0, 4) });
-    setTimeout(() => setShowResult(true), 100);
+    const picks = scored.slice(0, 4).map((s) => s.product);
+    const personalityTitle = personalityResultTitles[answers.personality] || "Perfect Picks for You";
+    setResult({ title: personalityTitle, picks });
+    setShowResult(true);
   };
 
-  const reset = () => {
+  const resetQuiz = () => {
     setStep(0);
     setAnswers({});
     setResult(null);
     setShowResult(false);
+    setAnimKey((k) => k + 1);
   };
 
-  const progressPct = result
-    ? 100
-    : Math.round(((step + 1) / questions.length) * 100);
-
-  const currentQuestion = questions[step];
+  const progress = ((step) / questions.length) * 100;
 
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary/10 via-accent/20 to-secondary/10 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+      <section className="bg-denim-wash px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <Badge className="mb-3 bg-accent/20 text-accent-foreground border-0">
-            <Sparkles className="mr-1 h-3 w-3" />
-            Interactive Quiz
+          <Badge className="mb-3 bg-white/15 text-white border-0 backdrop-blur-sm">
+            <Gift className="mr-1 h-3 w-3" />
+            Gift Finder
           </Badge>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Gift Finder</h1>
-          <p className="mt-3 text-muted-foreground max-w-xl">
-            Not sure what to get? Answer 4 quick questions and we&apos;ll match you with the perfect pieces.
+          <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Find the Perfect Gift</h1>
+          <p className="mt-3 text-white/70 max-w-xl">
+            Answer 4 quick questions and we&apos;ll match your little one with pieces they&apos;ll love.
           </p>
         </div>
       </section>
 
-      {!result ? (
-        <section className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
-          {/* Progress */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">
-                Question {step + 1} of {questions.length}
-              </span>
-              <span className="text-sm font-medium text-primary">{progressPct}%</span>
-            </div>
-            <div className="h-2.5 w-full rounded-full bg-muted overflow-hidden">
-              <div
-                className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
-          </div>
-
-          <Card className="border-0 shadow-soft overflow-hidden">
-            <CardContent className="p-6 sm:p-8">
-              <div className="animate-in fade-in slide-in-from-right-4 duration-300">
-                <h2 className="text-xl font-semibold mb-6">{currentQuestion.question}</h2>
-
-                <div className="space-y-3">
-                  {currentQuestion.options.map((opt) => {
-                    const selected = answers[currentQuestion.id] === opt.value;
-                    return (
-                      <button
-                        key={opt.value}
-                        onClick={() => handleAnswer(opt.value)}
-                        className={`flex w-full items-center gap-4 rounded-xl border p-4 cursor-pointer transition-all text-left hover:scale-[1.01] active:scale-[0.99] ${
-                          selected
-                            ? "border-primary bg-primary/5 shadow-sm"
-                            : "border-border hover:border-muted-foreground/40 hover:bg-accent/30"
-                        }`}
-                      >
-                        <span className="text-2xl shrink-0">{opt.emoji}</span>
-                        <span className="font-medium">{opt.label}</span>
-                        {selected && (
-                          <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs animate-in zoom-in duration-200">
-                            <Check className="h-3.5 w-3.5" />
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
+      <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+        {!showResult ? (
+          <>
+            {/* ── Progress bar ── */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Question {step + 1} of {questions.length}
+                </span>
+                <span className="text-xs text-muted-foreground">{Math.round(progress)}% complete</span>
               </div>
+              <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              {/* Step dots */}
+              <div className="flex justify-between mt-2">
+                {questions.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                      i <= step ? "bg-primary scale-110" : "bg-muted-foreground/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
 
-              <div className="mt-8 flex items-center justify-between">
-                <Button
-                  variant="ghost"
-                  onClick={() => step > 0 && setStep(step - 1)}
-                  disabled={step === 0}
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+            {/* ── Question card ── */}
+            <Card className="border-0 bg-card-soft shadow-soft mb-6">
+              <CardContent className="p-6 sm:p-8">
+                <div key={animKey} className="animate-in fade-in slide-in-from-right-4 duration-300 fill-mode-backwards">
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="text-3xl">{["👶", "🎨", "🎉", "🌈"][step]}</span>
+                    <h2 className="text-xl font-bold sm:text-2xl">{questions[step].question}</h2>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {questions[step].options.map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => handleAnswer(option.value)}
+                        className="group flex items-center gap-4 rounded-xl border-2 border-border/30 p-4 text-left transition-all hover:border-primary/50 hover:bg-primary/5 hover:shadow-soft active:scale-[0.98] cursor-pointer"
+                      >
+                        <span className="text-3xl transition-transform group-hover:scale-110">{option.emoji}</span>
+                        <span className="font-medium text-sm">{option.label}</span>
+                        <ArrowRight className="ml-auto h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* ── Back / Restart controls ── */}
+            <div className="flex items-center justify-between">
+              {step > 0 ? (
+                <Button variant="ghost" size="sm" onClick={handleBack} className="text-xs rounded-full">
+                  <ArrowLeft className="mr-1 h-3 w-3" />
                   Back
                 </Button>
-                <Button variant="ghost" onClick={reset}>
-                  <RotateCcw className="mr-2 h-4 w-4" />
-                  Start Over
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-      ) : (
-        <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mb-10 text-center">
-            {showResult && (
-              <div className="animate-in zoom-in duration-300">
-                <Badge className="mb-3 bg-primary/10 text-primary border-0 text-sm px-5 py-1">
-                  Quiz Complete! 🎉
-                </Badge>
-              </div>
-            )}
-            <h2 className="text-3xl font-bold tracking-tight animate-in fade-in duration-500">{result.title}</h2>
-            <p className="mt-2 text-muted-foreground animate-in fade-in duration-500">
-              Based on your answers, here are the perfect picks for your little one.
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {result.picks.map((product, idx) => (
-              <ResultCard key={product.id} product={product} addItem={addItem} delay={idx * 120} />
-            ))}
-          </div>
-
-          {showResult && (
-            <div className="mt-10 text-center space-x-3 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-500">
-              <Button onClick={reset} variant="outline" className="rounded-full">
-                <RotateCcw className="mr-2 h-4 w-4" />
-                Try Again
-              </Button>
-              <Button asChild className="rounded-full">
-                <a href="/collections">
-                  View All <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+              ) : (
+                <div />
+              )}
+              <Button variant="ghost" size="sm" onClick={resetQuiz} className="text-xs text-muted-foreground rounded-full">
+                <RotateCcw className="mr-1 h-3 w-3" />
+                Start Over
               </Button>
             </div>
-          )}
-        </section>
-      )}
+          </>
+        ) : (
+          /* ── RESULTS ── */
+          <div>
+            {/* Result hero */}
+            <div className="mb-8 text-center animate-in fade-in slide-in-from-bottom-4 duration-400">
+              <span className="text-5xl block mb-3">🎉</span>
+              <Badge className="badge-pill mb-2 bg-primary/10 text-primary border-0">
+                <Sparkles className="mr-1 h-3 w-3" />
+                Your Results
+              </Badge>
+              <h2 className="text-2xl font-bold sm:text-3xl">{result?.title || "Our Picks for You"}</h2>
+              <p className="mt-2 text-muted-foreground text-sm max-w-sm mx-auto">
+                Based on your answers, here are the pieces we think they&apos;ll love most.
+              </p>
+            </div>
+
+            {/* Answers recap */}
+            <div className="mb-8 flex flex-wrap justify-center gap-2 animate-in fade-in slide-in-from-bottom-4 duration-400 fill-mode-backwards" style={{ animationDelay: "100ms" }}>
+              {Object.entries(answers).map(([key, val]) => {
+                const q = questions.find((q) => q.id === key);
+                const opt = q?.options.find((o) => o.value === val);
+                return (
+                  <span key={key} className="inline-flex items-center gap-1 rounded-full bg-card-soft border border-border/30 px-3 py-1 text-xs">
+                    <span>{opt?.emoji}</span>
+                    <span className="capitalize">{opt?.label || val}</span>
+                  </span>
+                );
+              })}
+            </div>
+
+            {/* Product grid */}
+            {result && (
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {result.picks.map((product, idx) => (
+                  <ResultCard key={product.id} product={product} delay={150 + idx * 100} />
+                ))}
+              </div>
+            )}
+
+            {/* Retake */}
+            <div className="mt-10 text-center">
+              <Button variant="outline" size="sm" onClick={resetQuiz} className="rounded-full text-xs">
+                <RotateCcw className="mr-1 h-3 w-3" />
+                Retake Quiz
+              </Button>
+            </div>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
